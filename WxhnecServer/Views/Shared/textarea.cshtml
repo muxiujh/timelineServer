@@ -1,0 +1,12 @@
+﻿@using WxhnecServer.Logics.Enums;
+@model System.Collections.Generic.Dictionary<TF, object>
+@{
+    Layout = null;
+}
+<div class="form-group">
+    <label class="col-xs-2 control-label">@Model[TF.title]</label>
+    <div class="col-xs-5 ">
+        <textarea name="@Model[TF.name]" class="form-control" rows="5">@Model[TF.value]</textarea>
+    </div>
+    <span class='help-block'></span>
+</div>

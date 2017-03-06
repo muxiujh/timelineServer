@@ -1,0 +1,108 @@
+﻿@charset "utf-8";
+/* CSS Document */
+/*-------广告条固定位置-css-------*/
+html {_background-image: url(about:blank); /* 阻止闪动 in IE6 , 把空文件换成about:blank , 减少请求 */_background-attachment: fixed;/* prevent screen flash in IE6 */}
+body { background-attachment: scroll;}
+#bottomTel { top:250px; height:217px; right:0px; overflow: visible; position: fixed; z-index: 999;
+	_bottom:auto; _position:absolute; /* for IE6 */ _top: expression(documentElement.scrollTop + documentElement.clientHeight-this.offsetHeight); /* for IE6 */overflow:visible;}
+.btm_tel {height:217px; float:right;width:182px; top:20px;}
+/*-------------------广州电了商务公共css---------------------*/
+*{ margin:0; padding:0;}
+body, button, input, select, textarea {font-family: "微软雅黑",Geneva,sans-serif; font-size: 13px; background:url(../images/picture/advert/Guangzhou.png) no-repeat center 40px #e6e6e6;}
+
+h1, h2, h3, h4, h5, h6 {font-size:100%;color:#333}
+address, cite, dfn, em, var {font-style:normal}
+code, kbd, pre, samp {font-family:courier new, courier, monospace}
+small {font-size:12px}
+ul, li {list-style:none outside none;}
+h1,h2,h3,h4,h5,h6 { font-size:100%;}
+code, em { font-style:normal; font-weight:normal;}
+.clear { clear:both;}
+a {color: #333333;text-decoration:none}
+a:hover {text-decoration:none; color:#2964BF;}
+a:link, a:visited, a:active { outline:none;}
+sup {vertical-align:text-top}
+sub {vertical-align:text-bottom}
+legend {color:#000}
+fieldset, img {border:none;}
+img {border:0px;font-size:0px;}
+button, input, select, textarea {font-size:100%;outline:none}
+table {border-collapse:collapse;border-spacing:0}
+object, embed {outline:0}
+p {line-height:1.6;color:#333333;}
+.fl {float:left}
+.fr {float:right;}
+.clr:after { content:""; display:block; clear:both; height:0; line-height:0; font-size:0; visibility:hidden;}
+.clr { zoom:1;}
+.experts_01fl li h2{overflow: hidden;text-overflow: ellipsis; white-space: nowrap;}
+
+/*********头部样式*********/
+
+.ter_head2{width:100%; height:265px;}
+.head_ct,.N-nav-channel,.rollBOx_title,.finish_center,.between_indtx,#press_poxcn,#culti_pox{ width:1003px; margin: 0 auto; overflow:hidden;}
+.entirety{ width:1003px; margin: 0 auto;}
+.headct_fl{ float:left; line-height:37px;color:#FFF; }
+.headct_fl em{ display:inline-block; padding:0px 10px; }
+.headct_fr{float: right; text-align: right;color:#646464; line-height:37px;}
+.headct_fl a,.headct_fr a{ color:#FFF; padding:0px 5px; display:inline-block;}
+.ter_head2 {background:url(../images/picture/body_pg.png) repeat-x 0 0;}
+.qq_pg,.headct_fl .qq_pg:hover,.subnav_p ,.edition_ct2 dl dd,.experts_title,.hotIco,.list2 li,.newIco,.scoreIco,.policy_main li a.name,.new_latestUlDiv p,.rollBOx_title h2 ,.logo_college,.finish_fl1 h2,.two-dimen1 dl dt,.ul_triangle li,.project_title h2{background:url(../images/icon/share.png) no-repeat;}
+
+.ep-header div.ep-content, .ep-header_b div.ep-content { background: none repeat scroll 0 0 #F8F8F8;}
+.N-nav-channel{ height: 14px;overflow: hidden; padding: 11px 0px;text-align:center;}
+.N-nav-channel a:link, .N-nav-channel a:visited { color: #252525;}
+.N-nav-channel a.first { border-left: 0 none; padding-left: 0; padding-right: 6px;}
+.N-nav-channel a { border-left: 1px solid #DDDDDD; display: inline-block; height: 22px; overflow: hidden;padding: 0 7px;}
+.N-nav-channel a:hover{ color:#19384a; font-weight:bold;}
+
+.more_logo{ width:100%; padding:40px 0px 20px 0px;}
+.more_rotate{ width:100%; padding:20px 0px;}
+.more_lgct a{ display:inline-block;background:url(../images/picture/nev_logo.png) no-repeat 0 0px; width:631px; height:81px; float:left; }
+.more_lgct{ width:631px;}
+
+/*----------*******查找*******------------*/
+#navbot { height: 40px; padding-top:10px;width:315px;}
+.nav-blue a { background-image:url(../images/picture/advert/nav_fl.png); background-repeat:no-repeat;}
+.ep-search { background-color:#FFF;border: 1px solid #feb781;height:40px; width: 315px;}
+.ep-search-text { border: 0 none;color: #BCBCBC;float: left; height:40px; line-height:40px;text-indent: 8px; width: 260px; background-color:#FFF;}
+.ep-search-btn {background-position:-85px 10px;border: 0 none; cursor: pointer;float: right; height: 40px;width: 40px; background-color:#ff7003;}
+ 
+
+.nav-blue {background: none repeat scroll 0 0 #F8F8F8;border-top: 4px solid #455d6b; float: left; height: 35px; margin-top:15px;}
+.nav-blue .first{border-left: 1px solid #D4D4D4; padding:0px 24px;}
+.nav-blue .current_si{background: none repeat scroll 0 0 #F1F1F1;  border-bottom: 1px solid #f1f1f1; color: #044C82; float: left; font-size: 14px;font-weight: bold;}
+.nav a, .nav a:visited { color: #252525;}
+.nav-blue a { background-position: -20px 0px;display:inline-block; border-bottom: 1px solid #CCCCCC;font-size: 14px; height: 34px; line-height: 34px;position: relative; padding:0px 17px;}
+.nav-blue a.current {  border-bottom: 1px solid #FFFFFF; color: #044C82; float: left; font-size: 14px;font-weight: bold;}
+
+
+/*----------*******结束*******------------*/
+.finish_pg{ margin:0 auto; width:100%;}
+.finish_pox{ background:url(../images/icon/finish.png) repeat-x 0 0px; height:403px;margin-top:10px; }
+.finish_fl2,.finish_fl1 h2,.finish_fl3{ border-right:1px #dddddd solid; }
+.finish_main1{ padding:0px 0px; height:223px; overflow:hidden;}
+.finish_fl1 h2{ background-position:0px -815px; width:200px; height:320px; text-indent:-999em;}
+
+.finish_fl2{ padding:20px 45px; height:370px;}
+.finish_fl2 h2,.finish_fl3 h2,.finish_fl4 h2{ font-size:15px; padding:10px 0px; }
+.finish_fl2 ul li,.finish_fl3 ul li,.finish_fl4 ul li{ line-height:23px; font-size:13px;}
+
+.finish_main1.finish_fl3 h2{ padding:10px 20px;}
+.finish_fl3 { width:280px; padding:20px 20px; height:270px;}
+.finish_fl3 ul li{ float:left; padding:1px 20px;}
+.finish_ct3{ padding-top:10px;}
+
+.finish_fl4{ width:270px;  padding:20px 20px;}
+.finish_fl4 ul li{ padding:0px 10px;float:left;}
+
+.finish_mainct2 ul {float: left; padding-left: 200px;}
+.finish_mainct2 ul li { float: left; font-size: 13px;line-height: 40px; padding: 0 10px;}
+.finish_mainct2 ul li a {color:#FFF;display: inline-block;}
+.two-dimen1{ margin:0 auto; width:980px;}
+.two-dimen1 dl{ width:280px; margin:10px 15px;  background-color: #FFFFFF; border: 1px solid #D6DBE1;border-radius: 5px;background-color:#fff; padding:5px; float:left;}
+.two-dimen1 dl.d1 dt{ background-position:0 -1037px;}
+.two-dimen1 dl.d2 dt{ background-position:0 -1171px;}
+.two-dimen1 dl.d3 dt{ background-position:0 -1300px;}
+.two-dimen1 dl dt{ float:left; width:100px; height:98px; text-indent:-999em; padding-left:15px;color:#666666;}
+.two-dimen1 dl dd{ padding:15px 0px; color:#666666;}
+

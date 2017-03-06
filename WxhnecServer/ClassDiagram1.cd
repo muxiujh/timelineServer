@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="WxhnecServer.Logics.TEntityLogic&lt;T&gt;" Collapsed="true">
+    <Position X="9" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAIAAAQAAAAAAAAAAAAAAgAiAAIAAAAAgAAIAAAAA=</HashCode>
+      <FileName>Logics\TEntityLogic\TEntityLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WxhnecServer.Logics.TFieldLogic&lt;T&gt;" Collapsed="true">
+    <Position X="9" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIQAAAAAAAAAAgAAAAAAAAJIAAAAAAAACAAAAAQA=</HashCode>
+      <FileName>Logics\TFieldLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WxhnecServer.Logics.Attributes.TElement" Collapsed="true">
+    <Position X="7" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Logics\Attributes\TElement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WxhnecServer.Logics.Attributes.TEntity" Collapsed="true">
+    <Position X="7" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Logics\Attributes\TEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WxhnecServer.Logics.Attributes.TField" Collapsed="true">
+    <Position X="7" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Logics\Attributes\TField.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WxhnecServer.Logics.Attributes.TValidate" Collapsed="true">
+    <Position X="7" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAIAAAAAAAAAABAgEAAAAIAAAAAAgAAAAAAAAAAg=</HashCode>
+      <FileName>Logics\Attributes\TValidate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WxhnecServer.Logics.Attributes.TVConfig" Collapsed="true">
+    <Position X="5.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Logics\Attributes\TVConfig.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="WxhnecServer.Logics.Enums.TE" Collapsed="true">
+    <Position X="5.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAAJAABIAAQgAwEAAAA=</HashCode>
+      <FileName>Logics\Enums\TE.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="WxhnecServer.Logics.Enums.TF" Collapsed="true">
+    <Position X="5.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAgAAAIAAIAAAAAAAAFACBAAAAAAAAAAAA=</HashCode>
+      <FileName>Logics\Enums\TF.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="WxhnecServer.Logics.Enums.TV" Collapsed="true">
+    <Position X="5.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQBAhAAAAAAgAAAAEAAAgAAAQgAAAAAA=</HashCode>
+      <FileName>Logics\Enums\TV.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>
