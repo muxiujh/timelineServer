@@ -14,154 +14,103 @@ using WxhnecServer.Tools;
 
 namespace WxhnecServer.Logics
 {
-    public class TFieldLogic<T> where T : class
+    using TFDictionary = Dictionary<TF, object>;
+
+    public class TFieldLogic
     {
-        Type m_type;
 
-        public Type TType { get { return m_type; } }
-
-        public TFieldLogic() {
-            m_type = typeof(T);
-        }
-
-        public PropertyInfo[] GetPropertyList() {
-            return m_type.GetProperties();
-        }
-
-        public Dictionary<TF, object> Field2UI(PropertyInfo pro, object val) {
-
-            IEnumerable<TField> attributes = pro.GetCustomAttributes<TField>();
-            Dictionary<TF, object> dict = attributes.ToDictionary(p => p.key, p => p.val);
-            TElement element = pro.GetCustomAttribute<TElement>();
-            if (element == null) {
-                element = new TElement(TE.text);
+        public TFDictionary Field2UI(PropertyInfo pro, object value) {
+            if (PropertyHelper.IsVirtual(pro)) {
+                return null;
             }
 
-            // Reserved
+            TFDictionary dict = pro.GetCustomAttributes<TField>()
+                                            .ToDictionary(p => p.Key, p => p.Value);
+
+            // Reserved return
             if (dict.ContainsKey(TF.reserved)) {
                 return null;
             }
 
-            // PrimaryKey
-            if (pro.Name == "id") {
-                dict[TF.type] = TE.hidden;
-            }
+            // begin fill dictionary
+            PropertyHelper.FillTFDictionary(ref dict);
 
-            // type
-            fillDictionary(ref dict, TF.type, element.key);
-            string view;
-            switch (element.key) {
+            // element
+            TElement element = pro.GetCustomAttribute<TElement>();
+            if (element == null) {
+                TE te = PropertyHelper.IsKey(pro) ? TE.hidden : TE.text;
+                element = new TElement(te);
+            }
+            dict[TF.element] = element.Key;
+
+            // dataSource
+            dict[TF.dataSource] = element.Value;
+
+            // widget
+            string widget;
+            switch (element.Key) {
                 case TE.text:
                 case TE.password:
                 case TE.url:
                 case TE.tel:
-                    view = TE.text.ToString();
+                    widget = TE.text.ToString();
                     break;
                 default:
-                    view = element.key.ToString();
+                    widget = element.Key.ToString();
                     break;
             }
-
-            // dataSource
-            fillDictionary(ref dict, TF.dataSource, element.val);
+            dict[TF.widget] = widget;
 
             // name
             dict[TF.name] = pro.Name;
 
             // value
-            if ((TE)dict[TF.type] == TE.date) {
-                val = Convert.ToDateTime(val).ToString("yyyy-MM-dd");
-            }
-            dict[TF.value] = val;
-
-            // title
-            fillDictionary(ref dict, TF.title, "");
-
-            // unit
-            fillDictionary(ref dict, TF.unit, "");
-
-            // desc
-            fillDictionary(ref dict, TF.desc, null);
+            THelper.ConvertToUI(element.Key, ref value);
+            dict[TF.value] = value;
 
             return dict;
         }
 
-        void fillDictionary(ref Dictionary<TF, object> dict, TF key, object value) {
-            object temp;
-            dict.TryGetValue(key, out temp);
-            if (temp == null) {
-                dict[key] = value;
-            }
-        }
-
-        public T UI2Row(FormCollection collection) {
-            T row = (T)Activator.CreateInstance(m_type, null);
-            PropertyInfo[] propertyList = m_type.GetProperties();
-            foreach (PropertyInfo pro in propertyList) {
-                if (!collection.AllKeys.Contains(pro.Name)) {
-                    continue;
+        public void Row2UI(object row, Action<TFDictionary> act) {
+            Type type = THelper.GetBaseType(row);
+            var propertyList = type.GetProperties();
+            List<TFDictionary> list = new List<TFDictionary>();
+            foreach (PropertyInfo pro in type.GetProperties()) {
+                var value = pro.GetValue(row);
+                if (PropertyHelper.IsVirtual(pro)) {
+                    if (PropertyHelper.HasElement(pro)) {
+                        if(value == null) {
+                            value = Activator.CreateInstance(pro.PropertyType, null);
+                        }
+                        Row2UI(value, act);
+                    }
                 }
-
-                object val = collection[pro.Name];
-                convertValue(pro.PropertyType, ref val);
-                pro.SetValue(row, val);
+                else {
+                    var dict = Field2UI(pro, value);
+                    // action
+                    act(dict);
+                }
             }
-            return row;
         }
 
-
-        public object UI2RowRaw(NameValueCollection collection, Type type) {
+        public object UI2Row(NameValueCollection collection, Type type) {
             var row = Activator.CreateInstance(type, null);
             PropertyInfo[] propertyList = type.GetProperties();
             foreach (PropertyInfo pro in propertyList) {
 
-                if (THelper.IsVirtual(pro)) {
-                    if (THelper.HasElement(pro)) {
-                        var subRow = UI2RowRaw(collection, pro.PropertyType);
+                if (PropertyHelper.IsVirtual(pro)) {
+                    if (PropertyHelper.HasElement(pro)) {
+                        var subRow = UI2Row(collection, pro.PropertyType);
                         pro.SetValue(row, subRow);
                     }
                 }
                 else if (collection.AllKeys.Contains(pro.Name)) {
                     object val = collection[pro.Name];
-                    convertValue(pro.PropertyType, ref val);
-                    pro.SetValue(row, val);
-                }
-                    
+                    THelper.ConvertToType(pro.PropertyType, ref val);
+                    pro.SetValue(row, val);                    
+                }                    
             }
             return row;
-        }
-
-        void checkNum(ref object val) {
-            if(val.ToString() == "") {
-                val = 0;
-            }
-        }
-
-        void convertValue(Type type, ref object val) {
-            if (type == typeof(Int32?)) {
-                checkNum(ref val);
-                val = Convert.ToInt32(val);
-            }
-            else if (type == typeof(Int64?)) {
-                checkNum(ref val);
-                val = Convert.ToInt64(val);
-            }
-            else if (type == typeof(DateTime?)) {
-                val = Convert.ToDateTime(val);
-            }
-        }
-
-        public string PrintEntity(FormCollection collection) {
-            T row = UI2Row(collection);
-            string result = "";
-            PropertyInfo[] propertys = m_type.GetProperties();
-            foreach (PropertyInfo pro in propertys) {
-                if (!collection.AllKeys.Contains(pro.Name)) {
-                    continue;
-                }
-                result += pro.Name + " = " + pro.GetValue(row) + "<br>";
-            }
-            return result;
         }
     }
 }

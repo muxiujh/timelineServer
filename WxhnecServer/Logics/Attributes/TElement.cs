@@ -9,12 +9,12 @@ namespace WxhnecServer.Logics.Attributes
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class TElement : Attribute
     {
-        public TE key { get; set; }
-        public object val { get; set; }
+        public TE Key { get; set; }
+        public object Value { get; set; }
 
-        public TElement(TE pKey, object pVal = null) {
-            key = pKey;
-            val = pVal;
+        public TElement(TE key, object value = null) {
+            Key = key;
+            Value = value;
         }
     }
 }

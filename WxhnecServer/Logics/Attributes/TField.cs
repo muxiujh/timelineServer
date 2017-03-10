@@ -9,12 +9,12 @@ namespace WxhnecServer.Logics.Attributes
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
     public class TField : Attribute
     {
-        public TF key { get; set; }
-        public object val { get; set; }
+        public TF Key { get; set; }
+        public object Value { get; set; }
 
-        public TField(TF pKey, object pVal = null) {
-            key = pKey;
-            val = pVal;
+        public TField(TF key, object value = null) {
+            Key = key;
+            Value = value;
         }
     }
 }

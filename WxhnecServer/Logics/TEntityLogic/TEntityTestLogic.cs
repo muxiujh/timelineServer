@@ -8,6 +8,7 @@ using System.Data.Entity;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Validation;
 using System.Data.Entity.Infrastructure;
+using WxhnecServer.Tools;
 
 namespace WxhnecServer.Logics
 {
@@ -15,39 +16,25 @@ namespace WxhnecServer.Logics
     public class TEntityTestLogic<T> : TEntityBaseLogic<T> where T : class
     {
         Random m_random;
+        T m_row;
 
         public TEntityTestLogic() {
             m_random = new Random();
-        }
-
-        int getRandomInt() {
-            return m_random.Next(1, 100);
-        }
-
-        bool autoIncrease(PropertyInfo pro) {
-            var result = true;
-            foreach (CustomAttributeData attr in pro.CustomAttributes) {
-                Type attrType = attr.AttributeType;
-                if (attrType == typeof(DatabaseGeneratedAttribute)) {
-                    result = false;
-                }
-            }
-            return result;
         }
 
         T FillRow(T prow = null) {
             T row = null;
             bool modeCreate = prow == null;
             if (modeCreate) {
-                row = (T)Activator.CreateInstance(m_type, null);
+                row = (T)Activator.CreateInstance(TType, null);
             }
             else {
                 row = prow;
             }
-            PropertyInfo[] propertys = m_type.GetProperties();
+            PropertyInfo[] propertys = TType.GetProperties();
             foreach (PropertyInfo pro in propertys) {
                 if (pro.Name == "id") {
-                    if (autoIncrease(pro)) {
+                    if (PropertyHelper.IsAutoIncrease(pro)) {
                         continue;
                     }
                     else if (!modeCreate) {
@@ -57,13 +44,13 @@ namespace WxhnecServer.Logics
 
                 object val = null;
                 if (pro.PropertyType == typeof(Int32?)) {
-                    val = getRandomInt();
+                    val = THelper.GetRandom();
                 }
                 else if (pro.PropertyType == typeof(Int64?)) {
-                    val = Convert.ToInt64(getRandomInt());
+                    val = Convert.ToInt64(THelper.GetRandom());
                 }
                 else if (pro.PropertyType == typeof(String)) {
-                    val = pro.Name + " " + getRandomInt();
+                    val = pro.Name + " " + THelper.GetRandom();
                 }
                 else if (pro.PropertyType == typeof(DateTime?)) {
                     val = DateTime.Now;

@@ -14,24 +14,32 @@ namespace WxhnecServer.Logics
     public class TEntityBaseLogic<T> where T : class
     {
         protected JDb m_db;
-        protected T m_row;
+
         protected DbSet<T> m_dbset;
-        protected Type m_type;
+        public T Row { get; }
+        public Type TType { get; set; }
 
         public TEntityBaseLogic() {
             m_db = new JDb();
-            m_type = typeof(T);
+            TType = typeof(T);
             initDbSet();
         }
 
+        ~TEntityBaseLogic() {
+            if (m_db != null) {
+                m_db.Dispose();
+            }
+        }
+
         void initDbSet() {
-            PropertyInfo property = typeof(JDb).GetProperty(m_type.Name);
+            // get property pre_activity using typeof(T).Name as "pre_activity"
+            PropertyInfo property = typeof(JDb).GetProperty(TType.Name);
             m_dbset = (DbSet<T>)property.GetValue(m_db);
         }
 
         public T FindRow(int id, string reference = null) {
             T row = m_dbset.Find(id);
-            if (reference != null) {
+            if (row != null &&　reference != null) {
                 m_db.Entry(row).Reference(reference).Load();
             }
             return row;

@@ -1,4 +1,5 @@
 ﻿@using WxhnecServer.Logics.Enums;
+@using WxhnecServer.Tools;
 @model System.Collections.Generic.Dictionary<TF, object>
 @{
     Layout = null;
@@ -7,7 +8,7 @@
     <label class="col-xs-2 control-label">@Model[TF.title]</label>
     <div class="col-xs-5 ">
         <select name="@Model[TF.name]" class="form-control" style="width: 150px;">
-        @foreach (KeyValuePair<int, string> pair in WxhnecServer.Tools.MHelper.getList(Model[TF.dataSource].ToString())) {
+        @foreach (KeyValuePair<int, string> pair in THelper.GetList(Model[TF.dataSource].ToString())) {
             string selected = pair.Key == Convert.ToInt32(Model[TF.value]) ? "selected" : "";
             <option @selected value='@pair.Key'>@pair.Value</option>
         }

@@ -18,23 +18,25 @@ namespace WxhnecServer.Logics
     {
         public List<DbEntityValidationResult> EntityValidationErrors;
         public List<string> RequiredErrors = new List<string>();
-        public bool Success {
-            get {
-                return (EntityValidationErrors == null || EntityValidationErrors.Count == 0)
-                    && (RequiredErrors == null || RequiredErrors.Count == 0);
-            }
-        }
+        public string Error { get; set; }
 
-        bool checkModify(Type type, ref object row) {
+        //
+        // only the changed field will be validate and update
+        //
+        bool checkModify(ref object row) {
+            if(row == null) {
+                return false;
+            }
+
             bool bResult = false;
-            DbEntityEntry rowEntry = m_db.Entry(row);
+            Type type = THelper.GetBaseType(row);
             foreach (PropertyInfo pro in type.GetProperties()) {
-                if (THelper.IsVirtual(pro)) {
-                    if (THelper.HasElement(pro)) {
-                        var subRow = pro.GetValue(row);
-                        if (checkModify(pro.PropertyType, ref subRow)) {
+                if (PropertyHelper.IsVirtual(pro)) {
+                    if (PropertyHelper.HasElement(pro)) {
+                        var value = pro.GetValue(row);
+                        if (checkModify(ref value)) {
                             // set modify
-                            pro.SetValue(row, subRow);
+                            pro.SetValue(row, value);
                             bResult = true;
                         }
                     }
@@ -45,7 +47,7 @@ namespace WxhnecServer.Logics
                     }
                     if (pro.GetValue(row) != null) {
                         // set modify
-                        DbPropertyEntry proEntry = rowEntry.Property(pro.Name);
+                        DbPropertyEntry proEntry = m_db.Entry(row).Property(pro.Name);
                         proEntry.IsModified = true;
                         bResult = true;
                     }
@@ -54,76 +56,115 @@ namespace WxhnecServer.Logics
             return bResult;
         }
 
-        //
-        // only the changed field will be validate and update
-        //
-        public int Modify(object row) {
-            int result = -1;
-            m_dbset.Attach((T)row);
-            if (checkModify(m_type, ref row)) {
-                result = saveChanges();
+        bool checkAdd(ref object row) {
+            if (row == null) {
+                return false;
             }
-            return result;
-        }
 
-        int saveChanges() {
-            int result = -1;
-            try {
-                result = m_db.SaveChanges();
-            }
-            catch (DbEntityValidationException ex) {                
-                EntityValidationErrors = (List<DbEntityValidationResult>)ex.EntityValidationErrors;
-            }
-            return result;
-        }
-
-        bool isRequired(PropertyInfo pro) {
-            bool bResult = false;
-            var attrs = pro.GetCustomAttributes<TValidate>();
-            foreach (TValidate tv in attrs) {
-                if (tv.key == TV.required) {
-                    bResult = true;
-                    break;
-                }
-            }
-            return bResult;
-        }
-
-        bool checkAdd(Type type, ref object row) {
             bool bResult = true;
-            DbEntityEntry rowEntry = m_db.Entry(row);
+            Type type = THelper.GetBaseType(row);
             foreach (PropertyInfo pro in type.GetProperties()) {
-                if (THelper.IsVirtual(pro)) {
-                    if (THelper.HasElement(pro)) {
-                        var subRow = pro.GetValue(row);
-                        if (!checkAdd(pro.PropertyType, ref subRow)) {
+                if (PropertyHelper.IsVirtual(pro)) {
+                    if (PropertyHelper.HasElement(pro)) {
+                        var value = pro.GetValue(row);
+                        if (value == null) {
+                            value = Activator.CreateInstance(pro.PropertyType, null);
+                        }
+                        if (!checkAdd(ref value)) {
                             // set error
                             bResult = false;
                         }
                     }
                 }
-                else if (pro.GetValue(row) == null && isRequired(pro)) {
+                else if ((row == null || pro.GetValue(row) == null) && PropertyHelper.IsRequired(pro)) {
                     // set error
                     RequiredErrors.Add(pro.Name);
+                    Error = RequiredErrors.First();
                     bResult = false;
                 }
             }
             return bResult;
         }
 
-        public int Add(object row) {
+        bool checkRow(ref T row) {
+            bool bResult = true;
+            if (row == null) {
+                Error = "row is null";
+                bResult = false;
+            }
+            return bResult;
+        }
+
+        //
+        // return
+        //      -1: DbError
+        //      0~n: Success
+        //
+        int saveChanges() {
             int result = -1;
-            m_dbset.Add((T)row);
-            if (checkAdd(m_type, ref row)) {
-                result = saveChanges();
+            try {
+                result = m_db.SaveChanges();
+            }
+            catch (DbEntityValidationException ex) {
+                EntityValidationErrors = (List<DbEntityValidationResult>)ex.EntityValidationErrors;
+                Error = EntityValidationErrors.First().ValidationErrors.First().ErrorMessage;
             }
             return result;
         }
 
+        public T Add(T row) {
+            if (!checkRow(ref row)) {
+                return null;
+            }
+
+            T result = null;
+            object rowReal = row;
+            m_dbset.Add(row);
+            if (checkAdd(ref rowReal)) {
+                if (saveChanges() >= 0) {
+                    result = row;
+                }
+            }
+            return result;
+        }
+
+        public bool Modify(T row) {
+            if (!checkRow(ref row)) {
+                return false;
+            }
+
+            bool bResult = false;
+            object rowReal = row;
+            m_dbset.Attach(row);
+            if (checkModify(ref rowReal)) {
+                if (saveChanges() >= 0) {
+                    bResult = true;
+                }
+            }
+            else {
+                bResult = true;
+            }
+            return bResult;
+        }
+
+        public bool Remove(T row) {
+            if (!checkRow(ref row)) {
+                return false;
+            }
+
+            bool bResult = false;
+            m_db.Entry(row).State = EntityState.Deleted;
+            bResult = saveChanges() >= 0;
+            return bResult;
+        }
+
+        public bool RemoveId(int id) {
+            return Remove(FindRow(id));
+        }
+
         public string GetTitle() {
-            TEntity entity = m_type.GetCustomAttribute<TEntity>();
-            string name = entity != null ? entity.Name : "";
-            return name;
+            TEntity entity = TType.GetCustomAttribute<TEntity>();
+            return entity != null ? entity.Value : null;
         }
     }
     

@@ -12,9 +12,8 @@ namespace WxhnecServer.Logics.Attributes
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
     public class TValidate : ValidationAttribute
     {
-        public TV key { get; set; }
-        public object val { get; set; }
-        static Dictionary<TV, TVConfig> config = getTVConfig();
+        public TV Key { get; set; }
+        public object Value { get; set; }
 
         private object m_typeid;
         public override object TypeId {
@@ -26,18 +25,18 @@ namespace WxhnecServer.Logics.Attributes
             }
         }
 
-        public TValidate(TV pKey, object pVal = null) {
-            key = pKey;
-            val = pVal;
+        public TValidate(TV key, object value = null) {
+            Key = key;
+            Value = value;
         }
 
         public override string FormatErrorMessage(string name) {
-            TVConfig tvAttr = config[key];
-            string result = tvAttr.err;
-            switch (key) {
+            TVConfig tvAttr = TVConfig.Configs[Key];
+            string result = tvAttr.Error;
+            switch (Key) {
                 case TV.minlength:
                 case TV.maxlength:
-                    result = string.Format(result, val);
+                    result = string.Format(result, Value);
                     break;
             }
             return result;
@@ -49,7 +48,7 @@ namespace WxhnecServer.Logics.Attributes
             }
 
             bool result = true;
-            switch (key) {
+            switch (Key) {
                 case TV.required:
                     Type type = obj.GetType();
                     if (type == typeof(String)) {
@@ -63,32 +62,20 @@ namespace WxhnecServer.Logics.Attributes
                     }
                     break;
                 case TV.minlength:
-                    result = obj.ToString().Length >= Convert.ToInt32(val);
+                    result = obj.ToString().Length >= Convert.ToInt32(Value);
                     break;
                 case TV.maxlength:
-                    result = obj.ToString().Length <= Convert.ToInt32(val);
+                    result = obj.ToString().Length <= Convert.ToInt32(Value);
                     break;
+                default: {
+                        TVConfig tvAttr = TVConfig.Configs[Key];
+                        if (tvAttr.Regulation != null) {
+                            result = Regex.Match(obj.ToString(), tvAttr.Regulation).Success;
+                        }
+                        break;
+                    }
             }
-            TVConfig tvAttr = config[key];
-            if (tvAttr.reg != null) {
-                result = Regex.Match(obj.ToString(), tvAttr.reg).Success;
-            }
-
             return result;
-        }
-
-        static Dictionary<TV, TVConfig> getTVConfig() {
-            Dictionary<TV, TVConfig> dict = new Dictionary<TV, TVConfig>();
-            FieldInfo[] fieldList = typeof(TV).GetFields();
-            foreach (FieldInfo field in fieldList) {
-                TVConfig tvAttr = field.GetCustomAttribute<TVConfig>();
-                if(tvAttr == null) {
-                    continue;
-                }
-                TV tv = (TV)Enum.Parse(typeof(TV), field.Name);
-                dict[tv] = tvAttr;
-            }
-            return dict;
         }
 
     }

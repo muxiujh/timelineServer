@@ -8,12 +8,13 @@
     {
         reserved,
         title,
-        type,
+        element,
         dataSource,
         unit,
         desc,
         name,
-        value
+        value,
+        widget
     }
 	
 }
