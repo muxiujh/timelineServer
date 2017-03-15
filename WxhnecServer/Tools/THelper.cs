@@ -12,6 +12,38 @@ namespace WxhnecServer.Tools
 {
     public class THelper
     {
+        static public T ConvertToEnum<T>(string key, T defaultEnum) {
+            T result = defaultEnum;
+            while (true) {
+                if (string.IsNullOrWhiteSpace(key)) {
+                    break;
+                }
+
+                try {
+                    result = (T)Enum.Parse(typeof(T), key);
+                }
+                catch { }
+
+                break;
+            }
+            return result;
+        }
+
+        static public Dictionary<TEnum, TConfig> GetEnumConfigs<TEnum, TConfig>() where TConfig: Attribute {
+            Dictionary<TEnum, TConfig> dict = new Dictionary<TEnum, TConfig>();
+            FieldInfo[] fieldList = typeof(TEnum).GetFields();
+            foreach (FieldInfo field in fieldList) {
+                Type type = typeof(TConfig);
+                TConfig tConfig = field.GetCustomAttribute<TConfig>();
+                if (tConfig == null) {
+                    continue;
+                }
+                TEnum tEnum = (TEnum)Enum.Parse(typeof(TEnum), field.Name);
+                dict[tEnum] = tConfig;
+            }
+            return dict;
+        }
+
         static public Dictionary<int, string> GetList(string key) {
             Dictionary<int, string> list = new Dictionary<int, string> {
                 { 1, "yes" },

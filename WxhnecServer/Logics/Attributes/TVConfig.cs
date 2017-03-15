@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using WxhnecServer.Logics.Enums;
+using WxhnecServer.Tools;
 
 namespace WxhnecServer.Logics.Attributes
 {
@@ -17,21 +18,8 @@ namespace WxhnecServer.Logics.Attributes
             Error = error;
             Regulation = regulation;
         }
-        
-        static public Dictionary<TV, TVConfig> Configs = getTVConfigs();
 
-        static private Dictionary<TV, TVConfig> getTVConfigs() {
-            Dictionary<TV, TVConfig> dict = new Dictionary<TV, TVConfig>();
-            FieldInfo[] fieldList = typeof(TV).GetFields();
-            foreach (FieldInfo field in fieldList) {
-                TVConfig tvAttr = field.GetCustomAttribute<TVConfig>();
-                if (tvAttr == null) {
-                    continue;
-                }
-                TV tv = (TV)Enum.Parse(typeof(TV), field.Name);
-                dict[tv] = tvAttr;
-            }
-            return dict;
-        }
+        static public Dictionary<TV, TVConfig> Configs = THelper.GetEnumConfigs<TV, TVConfig>();
+
     }
 }
