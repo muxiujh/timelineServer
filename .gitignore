@@ -243,5 +243,5 @@ ModelManifest.xml
 
 *.Tests/*
 *.csproj
-*/DB/*.cs
+*/Models/DB/*.cs
 *.cd

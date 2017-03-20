@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace WxhnecServer.Controllers
+namespace WxhnecServer
 {
     public class ListController : Controller
     {

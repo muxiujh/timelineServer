@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using WxhnecServer.Logics;
-using WxhnecServer.Tools;
+using JCore;
 
-namespace WxhnecServer.Models
+namespace WxhnecServer
 {
     public class ConfigModel : TEntityBaseLogic<pre_config>, ICacheList, ICacheRow
     {
