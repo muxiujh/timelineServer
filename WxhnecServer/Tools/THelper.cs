@@ -123,5 +123,21 @@ namespace WxhnecServer.Tools
                 value = null;
             }
         }
+
+        static public int? StringToInt(string value) {
+            int? result = null;
+            while (true) {
+                if (string.IsNullOrWhiteSpace(value)) {
+                    break;
+                }
+                try {
+                    result = Convert.ToInt32(value);
+                }
+                catch { }
+
+                break;
+            }
+            return result;
+        }
     }
 }
