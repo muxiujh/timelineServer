@@ -41,5 +41,10 @@ namespace JCore
             return row;
         }
 
+        public string GetTitle() {
+            TEntity entity = TType.GetCustomAttribute<TEntity>();
+            return entity != null ? entity.Value : null;
+        }
+
     }
 }

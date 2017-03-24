@@ -7,8 +7,10 @@ namespace JCore
 {
     public class PropertyHelper
     {
+        public const string DefaultKey = "id";
+
         static public bool IsKey(PropertyInfo pro) {
-            return pro.Name == "id";
+            return pro.Name == DefaultKey;
         }
 
         static public bool IsVirtual(PropertyInfo pro) {
@@ -59,6 +61,20 @@ namespace JCore
                     dict[key] = null;
                 }
             }
+        }
+
+        static public bool IsListShow(PropertyInfo pro) {
+            bool result = false;
+            while (true) {
+                var attr = pro.GetCustomAttribute<TListShow>();
+                if(attr == null) {
+                    break;
+                }
+
+                result = attr.Enable;
+                break;
+            }
+            return result;
         }
     }
 }

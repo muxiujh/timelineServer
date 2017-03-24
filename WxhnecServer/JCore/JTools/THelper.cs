@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -133,5 +134,18 @@ namespace JCore
             }
             return result;
         }
+        
+        static public object CreateInstance(Type generic, string tNamespaceClass) {
+            object result = null;
+            try {
+                Type entityType = Type.GetType(tNamespaceClass, true);
+                Type[] typeArgs = { entityType };
+                var gen = generic.MakeGenericType(typeArgs);
+                result = Activator.CreateInstance(gen, null);
+            }
+            catch { }
+            return result;
+        }
+
     }
 }

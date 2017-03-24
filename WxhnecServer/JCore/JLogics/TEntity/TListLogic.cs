@@ -11,6 +11,7 @@ namespace JCore
         Expression m_query;
         int? m_skip;
         int? m_take;
+        bool m_isOrder = false;
 
         public TListLogic() {
             m_query = m_dbset.AsQueryable().Expression;
@@ -20,16 +21,18 @@ namespace JCore
             while (true) {
                 TListOrder listOrder = null;
                 if (!string.IsNullOrWhiteSpace(key)) {
+                    // input sort
                     listOrder = new TListOrder(key, isAsc);
                 }
                 else {
+                    // config sort
                     listOrder = TType.GetCustomAttribute<TListOrder>();
+                    if (listOrder == null) {
+                        // DefaultKey sort
+                        listOrder = new TListOrder(PropertyHelper.DefaultKey, isAsc);
+                    }
                 }
 
-                // check key input
-                if (listOrder == null) {
-                    break;
-                }
 
                 // check key property
                 PropertyInfo property = TType.GetProperty(listOrder.Key);
@@ -50,6 +53,7 @@ namespace JCore
                     lambda
                     );
 
+                m_isOrder = true;
                 break;
             }
             return this;
@@ -139,6 +143,10 @@ namespace JCore
         }
 
         public List<T> ToList() {
+            if (!m_isOrder) {
+                TOrder();
+            }
+
             IQueryable<T> query = m_dbset.AsQueryable().Provider.CreateQuery<T>(m_query);
             if(m_skip != null) {
                 query = query.Skip(m_skip.Value);

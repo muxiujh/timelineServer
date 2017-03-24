@@ -103,6 +103,9 @@ namespace JCore
                 EntityValidationErrors = (List<DbEntityValidationResult>)ex.EntityValidationErrors;
                 Error = EntityValidationErrors.First().ValidationErrors.First().ErrorMessage;
             }
+            catch{
+                Error = "Unknown";
+            }
             return result;
         }
 
@@ -154,11 +157,6 @@ namespace JCore
 
         public bool RemoveId(int id) {
             return Remove(FindRow(id));
-        }
-
-        public string GetTitle() {
-            TEntity entity = TType.GetCustomAttribute<TEntity>();
-            return entity != null ? entity.Value : null;
         }
     }
     

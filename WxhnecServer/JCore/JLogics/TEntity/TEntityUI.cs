@@ -8,7 +8,7 @@ namespace JCore
 {
     using TFDictionary = Dictionary<TF, object>;
 
-    public class TFieldLogic
+    public class TEntityUI
     {
 
         public TFDictionary Field2UI(PropertyInfo pro, object value) {
@@ -63,25 +63,37 @@ namespace JCore
             return dict;
         }
 
-        public void Row2UI(object row, Action<TFDictionary> act) {
+        public void Row2UI(object row, Action<TFDictionary> act, bool isSub = false) {
             Type type = THelper.GetBaseType(row);
+            List<PropertyInfo> propertyListVirtual = new List<PropertyInfo>();
+
+            // propertyList
             var propertyList = type.GetProperties();
             List<TFDictionary> list = new List<TFDictionary>();
-            foreach (PropertyInfo pro in type.GetProperties()) {
-                var value = pro.GetValue(row);
+            foreach (PropertyInfo pro in propertyList) {
                 if (PropertyHelper.IsVirtual(pro)) {
                     if (PropertyHelper.HasElement(pro)) {
-                        if(value == null) {
-                            value = Activator.CreateInstance(pro.PropertyType, null);
-                        }
-                        Row2UI(value, act);
+                        propertyListVirtual.Add(pro);
                     }
                 }
                 else {
+                    if(isSub && PropertyHelper.IsKey(pro)) {
+                        continue;
+                    }
+                    var value = pro.GetValue(row);
                     var dict = Field2UI(pro, value);
                     // action
                     act(dict);
                 }
+            }
+
+            // propertyListVirtual
+            foreach (PropertyInfo pro in propertyListVirtual) {
+                var value = pro.GetValue(row);
+                if (value == null) {
+                    value = Activator.CreateInstance(pro.PropertyType, null);
+                }
+                Row2UI(value, act, true);
             }
         }
 

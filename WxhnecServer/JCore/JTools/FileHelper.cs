@@ -19,14 +19,14 @@ namespace JCore
             return path.Replace(name + ext, newName);
         }
 
-        static public bool CheckFile(string file) {
+        static public bool CheckFile(string path) {
             bool result = false;
             while (true) {
-                if (file == null) {
+                if (path == null) {
                     break;
                 }
 
-                if (!File.Exists(file)) {
+                if (!File.Exists(path)) {
                     break;
                 }
 
