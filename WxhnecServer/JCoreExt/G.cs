@@ -5,6 +5,12 @@ namespace JCore
 {
     public class G
     {
-        public static Dictionary<string, dynamic> Config = (new ConfigModel()).Cache();
+        static ConfigModel m_configModel = new ConfigModel();
+
+        public static Dictionary<string, dynamic> Config {
+            get {
+                return m_configModel.Cache();
+            }
+        }
     }
 }
