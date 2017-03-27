@@ -72,6 +72,23 @@ namespace JCore
                 case TE.hidden:
                     listElement = TE.text;
                     break;
+                case TE.select: {
+                        var dataSource = G.Config[dict[TF.dataSource].ToString()];
+                        object valueShow = null;
+                        try {
+                            var value = dict[TF.value];
+                            if (value != null) {
+                                valueShow = dataSource[value];
+                            }
+                        }
+                        catch { }
+                        dict[TF.value] = valueShow;
+                    }
+                    listElement = TE.text;
+                    break;
+                case TE.picture:
+                    listElement = TE.picture;
+                    break;
                 default:
                     listElement = TE.textarea;
                     break;

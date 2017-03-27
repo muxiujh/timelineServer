@@ -7,13 +7,15 @@ namespace JCore
     {
         OssClient m_client;
         string m_bucket;
+
         public AliOssLogic() {
-            string endpoint = "oss-cn-hangzhou.aliyuncs.com";
-            string accessKeyId = "yL9aubzdQnPA2S9Z";
-            string accessKeySecret = "6eqg815UcfGsFXSfhmBoWtIDXkfuT4";
+            var ossConfig = G.Config["AliOss"];
+            string endpoint = ossConfig["server"];
+            string accessKeyId = ossConfig["id"];
+            string accessKeySecret = ossConfig["secret"];
+            m_bucket = ossConfig["bucket"];
 
             m_client = new OssClient(endpoint, accessKeyId, accessKeySecret);
-            m_bucket = "wxhneclocal";
         }
 
         public bool Add(string key, string path) {

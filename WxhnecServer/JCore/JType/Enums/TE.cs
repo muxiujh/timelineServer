@@ -16,7 +16,8 @@
         hidden,
         select,
         textarea,
-        sub
+        sub,
+        picture
     }
 
 }

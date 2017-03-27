@@ -31,7 +31,7 @@ namespace WxhnecServer
             return convertValue(row.value, row.type);
         }
 
-        dynamic convertValue(string content, long? type) {
+        dynamic convertValue(string content, int? type) {
             if (string.IsNullOrEmpty(content)){
                 return null;
             }
@@ -41,18 +41,21 @@ namespace WxhnecServer
                 result = new Dictionary<dynamic, string>();
                 string[] lines = content.Split('\n');
                 for (int i = 0; i < lines.Length; ++i) {
-                    string[] temp = lines[i].Split(':');
-                    if (temp.Length > 1) {
-                        int? key = THelper.StringToInt(temp[0]);
+                    string line = lines[i];
+                    var index = line.IndexOf(':');
+                    if (index != -1) {
+                        string t1 = line.Substring(0, index);
+                        string t2 = line.Substring(index + 1);
+                        int? key = THelper.StringToInt(t1);
                         if (key != null) {
-                            result[key.Value] = temp[1];
+                            result[key.Value] = t2;
                         }
                         else {
-                            result[temp[0]] = temp[1];
+                            result[t1] = t2;
                         }
                     }
                     else {
-                        result[i + 1] = temp[0];
+                        result[i + 1] = line;
                     }
                 }
             }

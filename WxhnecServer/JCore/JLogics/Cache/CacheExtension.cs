@@ -7,7 +7,7 @@ namespace JCore
     public static class CacheExtension
     {
         // CacheList
-        public static object Cache(this ICacheList cacheLogic) {
+        public static dynamic Cache(this ICacheList cacheLogic) {
             string cacheKey = cacheLogic.GetType().Name;
             return cacheRaw(cacheKey, () => {
                 return cacheLogic.GetList();
@@ -20,7 +20,7 @@ namespace JCore
         }
 
         // CacheRow
-        public static object Cache(this ICacheRow cacheLogic, string key) {
+        public static dynamic Cache(this ICacheRow cacheLogic, string key) {
             if (string.IsNullOrEmpty(key)) {
                 return null;
             }

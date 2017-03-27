@@ -10,9 +10,7 @@ namespace JCore
 {
     public class TEntityLogic<T> : TEntityBaseLogic<T> where T : class
     {
-        public List<DbEntityValidationResult> EntityValidationErrors;
-        public List<string> RequiredErrors = new List<string>();
-        public string Error { get; set; }
+        public Dictionary<string, string> Errors = new Dictionary<string, string>();
 
         //
         // only the changed field will be validate and update
@@ -72,8 +70,7 @@ namespace JCore
                 }
                 else if ((row == null || pro.GetValue(row) == null) && PropertyHelper.IsRequired(pro)) {
                     // set error
-                    RequiredErrors.Add(pro.Name);
-                    Error = RequiredErrors.First();
+                    Errors[pro.Name] = "is required";
                     bResult = false;
                 }
             }
@@ -83,7 +80,7 @@ namespace JCore
         bool checkRow(ref T row) {
             bool bResult = true;
             if (row == null) {
-                Error = "row is null";
+                Errors["db"] = "row is null";
                 bResult = false;
             }
             return bResult;
@@ -100,11 +97,15 @@ namespace JCore
                 result = m_db.SaveChanges();
             }
             catch (DbEntityValidationException ex) {
-                EntityValidationErrors = (List<DbEntityValidationResult>)ex.EntityValidationErrors;
-                Error = EntityValidationErrors.First().ValidationErrors.First().ErrorMessage;
+                var validationResult = ex.EntityValidationErrors.First();
+                var iterator = validationResult.ValidationErrors.GetEnumerator();
+                while (iterator.MoveNext()) {
+                    var item = iterator.Current;
+                    Errors[item.PropertyName] = item.ErrorMessage;
+                }
             }
             catch{
-                Error = "Unknown";
+                Errors["db"] = "Unknown error";
             }
             return result;
         }

@@ -39,14 +39,6 @@ namespace JCore
             return dict;
         }
 
-        static public Dictionary<int, string> GetList(string key) {
-            Dictionary<int, string> list = new Dictionary<int, string> {
-                { 1, "yes" },
-                { 2, "no" }
-            };
-            return list;
-        }
-
         static public Type GetBaseType(object obj) {
             if(obj == null) {
                 return null;

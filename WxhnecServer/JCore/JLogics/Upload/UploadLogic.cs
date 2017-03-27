@@ -13,8 +13,10 @@ namespace JCore
         public string Error { get; set; }
 
         public UploadLogic() {
+            var uploadConfig = G.Config["UPLOAD"];
             m_config = new SUploadConfig();
-            m_config.ContentLength = 5 * 1024 * 1024;
+            var maxSize = THelper.StringToInt(uploadConfig["maxSize"]);
+            m_config.ContentLength = maxSize * 1024 * 1024;
             m_config.ContentTypeList = new string[] {
                 "image/jpeg",
                 "image/png"
@@ -23,8 +25,10 @@ namespace JCore
                 ImageFormat.Png,
                 ImageFormat.Jpeg
             };
-            m_config.Dir = "e:/testpic/upload/";
-            m_config.OssUrl = "http://wxhneclocal.oss-cn-hangzhou.aliyuncs.com/";
+            m_config.Dir = uploadConfig["dir"] + "/";
+
+            var ossConfig = G.Config["AliOss"];
+            m_config.OssUrl = "http://" + ossConfig["bucket"] + "." +ossConfig["server"] + "/";
         }
 
         public string Upload(HttpPostedFileBase httpFile) {
