@@ -1,0 +1,13 @@
+﻿@using JCore;
+@model System.Collections.Generic.Dictionary<TF, object>
+@{
+    Layout = null;
+    object pic_path = Model[TF.value];
+}
+
+<td>
+    @if (pic_path != null) {
+        <img style="max-height:50px; max-width:50px;" src="/Upload/Show?size=small&pic=@pic_path" />
+    }
+    <span style="width: 30px;" class="jh-span column-list-edit"></span>
+</td>

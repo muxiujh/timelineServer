@@ -1,0 +1,9 @@
+﻿@{ Layout = null; }
+
+@using JCore;
+@{
+    var PageLogic = new PageLogic(ViewBag.spage);
+    PageLogic.Show(node => {
+        Html.RenderPartial("pageNode", node);
+    });
+}

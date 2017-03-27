@@ -1,0 +1,27 @@
+﻿@{
+    Layout = "~/Views/Admin/_AdminLayout.cshtml";
+}
+
+<!-- panel -->
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">错误信息</h3>
+    </div>
+    <div class="panel-body">
+
+        <form class="form-horizontal jh-div-xxl-sub" role="form" method="post">
+
+            <!---------- form-group ---------->
+            <div class="form-group">
+                <label class="col-xs-2 control-label"></label>
+                <div class="col-xs-5 ">
+                    <p class="form-control-static">@ViewBag.Error</p>
+                </div>
+            </div>
+
+
+        </form>
+
+
+    </div>
+</div>

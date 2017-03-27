@@ -1,0 +1,15 @@
+﻿@using Newtonsoft.Json.Linq;
+@model JArray
+@{
+    Layout = "~/Views/Admin/_AdminLayout.cshtml";
+}
+
+<div class="jh-div-xl"></div>
+<ul class="nav nav-pills nav-stacked left-nav">
+    @{ for (int i = 0; i < Model.Count; ++i) {
+            JToken item = Model[i];
+            string selected = i == ViewBag.key ? "active" : "";
+        <li class="@selected"><a href="" data-toggle="tab" jh_node="admin_nav" jh_arg="a=@item["action"]&t=@item["template"]">@item["title"]</a></li>
+        }
+    }
+</ul>

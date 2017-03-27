@@ -1,0 +1,14 @@
+﻿@{
+    Layout = "~/Views/Admin/_RowLayout.cshtml";
+}
+
+@using JCore;
+@model Object
+@{
+    TEntityUI entityUI = new TEntityUI();
+    entityUI.Row2UI(Model, dict => {
+        if (dict != null) {
+            Html.RenderPartial("Row/" + dict[TF.widget].ToString(), dict);
+        }
+    });
+}

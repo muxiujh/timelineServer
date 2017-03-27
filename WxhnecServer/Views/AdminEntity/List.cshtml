@@ -1,0 +1,61 @@
+﻿@using JCore;
+@model Object
+@{
+    Layout = "~/Views/Admin/_AdminLayout.cshtml";
+}
+<!-- panel -->
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                @ViewBag.title - 列表 <span class="jh-span-xl"></span>
+                <small>
+                    <a href="/AdminEntity/Row/?t=@ViewBag.t"> 新增 </a>
+                </small>
+            </h3>
+        </div>
+
+
+
+        <table class="table text-muted">
+            <thead>
+                <tr class="small">
+                    @foreach (dynamic dict in ViewBag.listDict) {
+                        <th>@dict[TF.title]</th>
+                    }
+                    <th>edit</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @{
+                    TListUI listUI = new TListUI();
+
+                    listUI.List2UI(
+                        Model,
+                        () => {
+                            Html.RenderPartial("List/listRowBegin");
+                        },
+                        dict => {
+                            if (dict != null) {
+                                var dictObj = dict as Dictionary<TF, object>;
+                                Html.RenderPartial("List/"+ dictObj[TF.listElement].ToString(), dict);
+                            }
+                        },
+                        id => {
+                            Html.RenderPartial("List/listRowEnd", id);
+                        });
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="">
+    <ul class="pagination pagination-md">
+        @{ Html.RenderPartial("page"); }
+    </ul>
+</div>

@@ -1,0 +1,64 @@
+body{padding-top: 0;}
+
+/*--------- admin_top ---------*/
+.admin_top { background-color: #1450a0; overflow : hidden; color: White; }
+.admin_top a { color: #ccc; }
+.admin_top li a:hover { color: #2a6496; }
+.admin_top_refresh { margin-right: 150px; margin-top: 10px;}
+.top-left { width: 150px; }
+.top-right { width: 850px; }
+
+/*--------- admin_left ---------*/
+.admin_left { background-color: #F5F5F5;  width: 150px;  min-width: 150px; }
+.admin_left .nav-pills > li > a { border-radius:0; }
+.left-nav li a{ padding-left: 45px;}
+
+/*--------- admin_login ---------*/
+.admin_login { background-color: #F5F5F5 }
+
+/*--------- admin_main ---------*/
+.admin_main { margin: 10px;}
+h3 small { font-size: small}
+.hand { cursor: pointer}
+
+/*list*/
+.row-list {height: 50px;}
+.column-list-input { width: 200px; }
+.column-list-edit { width: 100px; }
+textarea.list-input {line-height: 22px; height:33px; position: absolute; width: 200px; }
+textarea.list-input		  { resize:none; z-index:1; overflow:hidden; }
+textarea.list-input:focus { resize:both; z-index:2; overflow:auto; }
+.textarea-input-box { z-index:2;}
+textarea.textarea-input {line-height: 22px; height:33px;}
+textarea.textarea-input		  { resize:none; overflow:hidden;}
+textarea.textarea-input:focus { resize:both; overflow: auto; }
+
+/*list filter*/
+.accordion .panel-heading { padding: 5px 10px; }
+.accordion .panel-title { font-size: 1em; color: #aaa; }
+.accordion .panel-title .btn { min-width: 50px; padding: 3px; }
+.accordion .panel { border-top: 0; border-left: 0; border-right: 0;  border-radius: 0;}
+
+/*list nav*/
+.main-nav { border-bottom: dashed 1px #ddd; margin-bottom: 10px; padding-bottom: 5px;}
+ul.main-nav > li:first-child { width: 80px; }
+.main-nav > li > a { padding: 5px 10px; }
+
+/*config column*/
+.column-name { width: 200px; }
+.column-checkbox { width: 100px;  cursor: pointer; }
+
+/*upload*/
+.upload_button  {width: 105px; padding: 7px 0; background: #880000; /*border-bottom: 1px solid #DDD;*/ color: #FFF; position: relative; overflow: hidden; text-align: center; display: block; border-radius: 4px;}
+.upload_button:hover { background: #cc0000;}
+.upload_button_muted {opacity: 0.4; filter:alpha(opacity=40)}
+.upload_button_file { position: absolute; top:0px; right:0px; cursor: pointer; font-size:100px; opacity: 0; filter:alpha(opacity=0);}
+.upload_image { max-height: 100px; }
+.upload_ul { list-style: none outside none; margin: 0; padding: 0; }
+.upload_li {background-color: #FFF0BD; font-size: 16px; line-height: 15px; margin: 0; padding: 9px;}
+.upload_li_success, .upload_li_success a {background-color: #eee; color: #FFFFFF;}
+.upload_li_failed, .upload_li_failed a {background-color: #D60000; color: #FFFFFF;}   
+
+.upload_image_small { height: 80px; width: 80px; }
+.upload_file_desc { width: 300px;}
+.float-left { float: left;}

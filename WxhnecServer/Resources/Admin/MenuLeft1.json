@@ -1,0 +1,11 @@
+﻿[
+  {
+    "title": "站点信息",
+    "action": "Admin/Info"
+  },
+  {
+    "title": "配置管理",
+    "action": "AdminEntity/List",
+    "template": "pre_config"
+  }
+]

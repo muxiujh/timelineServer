@@ -7,8 +7,8 @@
     <label class="col-xs-2 control-label">@Model[TF.title]</label>
     <div class="col-xs-5 ">
         <select name="@Model[TF.name]" class="form-control" style="width: 150px;">
-        @foreach (KeyValuePair<int, string> pair in THelper.GetList(Model[TF.dataSource].ToString())) {
-            string selected = pair.Key == Convert.ToInt32(Model[TF.value]) ? "selected" : "";
+        @foreach (KeyValuePair<object, string> pair in G.Config[Model[TF.dataSource].ToString()]) {
+            string selected = pair.Key.Equals(Model[TF.value]) ? "selected" : "";
             <option @selected value='@pair.Key'>@pair.Value</option>
         }
         </select>

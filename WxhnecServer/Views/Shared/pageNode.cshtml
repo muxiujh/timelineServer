@@ -1,0 +1,9 @@
+﻿@{ Layout = null; }
+
+@using JCore;
+@model SPageNode
+@{
+    string active = Model.Active ? "active" : "";
+    Controller C = ViewBag.controller;
+}
+<li class='@active'><a href='@C.U("p", Model.Index)'>@Model.Text</a></li>

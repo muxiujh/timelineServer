@@ -1,0 +1,74 @@
+﻿@{
+    Layout = "~/Views/Admin/_AdminLayout.cshtml";
+}
+
+<br /><br /><br /><br />
+
+<div class="row ">
+
+    <div class="col-xs-2 "> </div>
+    <div class="col-xs-10 ">
+
+        <form jh_node="form_send" action="LoginSave" class="form-horizontal jh-div-xxl-sub" role="form" method="post">
+
+            <!---------- form-group ---------->
+            <div class="form-group">
+                <div class="col-xs-10 ">
+                    <h2>海宁市电子商务协会微信小程序管理中心</h2>
+                    <br />
+                </div>
+                <span class='help-block'></span>
+            </div>
+
+            <!---------- form-group ---------->
+            <div class="form-group">
+                <label class="col-xs-2 control-label">用户名</label>
+                <div class="col-xs-4 ">
+                    <input type="text" name="uname" class="form-control" autocomplete="off" />
+                </div>
+                <span class='help-block'></span>
+            </div>
+
+
+            <!---------- form-group ---------->
+            <div class="form-group">
+                <label class="col-xs-2 control-label">密码</label>
+                <div class="col-xs-4 ">
+                    <input type="password" name="password" class="form-control" autocomplete="off" />
+                </div>
+                <span class='help-block'></span>
+            </div>
+
+            <!---------- form-group ---------->
+            <div class="form-group">
+                <label class="col-xs-2 control-label">验证码</label>
+                <div class="col-xs-4 ">
+                    <input type="text" class="form-control" autocomplete="off" />
+                </div>
+                <span class='help-block'></span>
+            </div>
+
+            <!---------- form-group 
+            <div class="form-group">
+                <label class="col-xs-2 control-label"></label>
+                <div class="col-xs-4 " jh_node='img_verify'>
+                    <img class="img-verify" src="?c=agent&rc=misc&ra=verify" title="点击更换一张" />
+                </div>
+                <span class='help-block'></span>
+            </div>
+            ---------->
+
+            <!---------- form-group ---------->
+            <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-4 ">
+                    <button type="submit" class="btn btn-primary btn-lg jh_button">登 录</button>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+

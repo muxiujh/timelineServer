@@ -1,0 +1,10 @@
+﻿[
+  {
+    "title": "首页",
+    "left": "MenuLeft1.json"
+  },
+  {
+    "title": "模块管理",
+    "left": "MenuLeft2.json"
+  }
+]
