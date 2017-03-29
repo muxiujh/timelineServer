@@ -28,7 +28,11 @@ namespace JCore
             m_config.Dir = uploadConfig["dir"] + "/";
 
             var ossConfig = G.Config["AliOss"];
-            m_config.OssUrl = "http://" + ossConfig["bucket"] + "." +ossConfig["server"] + "/";
+            m_config.OssUrl = "http://" + ossConfig["bucket"] + "." + ossConfig["server"] + "/";
+        }
+
+        public void SetServerDir(string serverDir) {
+            m_config.Dir = serverDir + m_config.Dir;
         }
 
         public string Upload(HttpPostedFileBase httpFile) {

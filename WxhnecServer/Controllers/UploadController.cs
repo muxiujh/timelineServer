@@ -13,8 +13,13 @@ namespace WxhnecServer
     {
         UploadLogic m_upload = new UploadLogic();
 
+        void initConfig() {
+            m_upload.SetServerDir(Server.MapPath("~"));
+        }
+
         [HttpPost]
         public string Index() {
+            initConfig();
             HttpPostedFileBase httpFile = Request.Files[0];
             string index = Request.Params["index"];
 
@@ -36,12 +41,13 @@ namespace WxhnecServer
 
         [HttpGet]
         public ActionResult Upload() {
-            
+            initConfig();
             return View();
         }
 
         [HttpGet]
         public ActionResult Show() {
+            initConfig();
             var collection = Request.Params;
 
             var result = m_upload.Show(collection.Get("pic"), collection.Get("size"));

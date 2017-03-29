@@ -16,7 +16,6 @@ namespace WxhnecServer
         public AdminController() {
             ViewBag.controller = this;
             ViewBag.ui = G.Config["UI"]["ui"];
-            ViewBag.resource = G.Config["UI"]["resource"];
 
             m_adminConfig = G.Config["AdminUI"];
             ViewBag.resourceAdmin = m_adminConfig["resource"];
@@ -62,11 +61,15 @@ namespace WxhnecServer
             return View();
         }
 
+        string getMenuDir() {
+            return Server.MapPath("~") + m_adminConfig["resource"] + "/";
+        }
+
         public ActionResult AdminTop(int id = 0) {
             ViewBag.bodyClass = "admin_top";
             ViewBag.key = id;
 
-            string menuConfig = m_adminConfig["menu"];
+            string menuConfig = getMenuDir() + m_adminConfig["menu"];
             var menu = ConfigHelper.LoadConfigIncludeSubFirst(menuConfig, "left", "sub");            
             return View(menu);
         }
@@ -75,9 +78,7 @@ namespace WxhnecServer
             ViewBag.bodyClass = "admin_left";
             ViewBag.key = id;
 
-            string menuConfig = m_adminConfig["menu"];
-            string menuDir = Path.GetDirectoryName(menuConfig) + "/";
-            var menuLeft = ConfigHelper.LoadConfig(menuDir + left);
+            var menuLeft = ConfigHelper.LoadConfig(getMenuDir() + left);
             return View(menuLeft);
         }
         

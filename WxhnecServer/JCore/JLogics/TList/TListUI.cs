@@ -12,7 +12,9 @@ namespace JCore
             dynamic listDynamic = list;
             foreach (object row in listDynamic) {
                 // row
-                rowBegin();
+                if (rowBegin != null) {
+                    rowBegin();
+                }
 
                 PropertyInfo[] propertyList = THelper.GetBaseType(row).GetProperties();   
                 object key = null;
@@ -29,7 +31,9 @@ namespace JCore
                     }
                 }
 
-                rowEnd(key);
+                if (rowEnd != null) {
+                    rowEnd(key);
+                }
             }
         }
 
