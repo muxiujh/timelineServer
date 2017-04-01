@@ -11,7 +11,7 @@ namespace JCore
     public class TEntityUI
     {
 
-        public TFDictionary Field2UI(PropertyInfo pro, object value) {
+        protected TFDictionary field2UI(PropertyInfo pro, object value) {
             if (PropertyHelper.IsVirtual(pro)) {
                 return null;
             }
@@ -81,7 +81,7 @@ namespace JCore
                         continue;
                     }
                     var value = pro.GetValue(row);
-                    var dict = Field2UI(pro, value);
+                    var dict = field2UI(pro, value);
                     // action
                     act(dict);
                 }

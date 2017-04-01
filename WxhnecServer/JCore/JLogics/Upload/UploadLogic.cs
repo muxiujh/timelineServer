@@ -37,8 +37,7 @@ namespace JCore
 
         public string Upload(HttpPostedFileBase httpFile) {
             string tempFile = http2Temp(httpFile);
-            string shortPath = temp2Local(tempFile);
-            return shortPath;
+            return temp2Local(tempFile);
         }
 
         public string Show(string shortPath, string imageSize = null) {

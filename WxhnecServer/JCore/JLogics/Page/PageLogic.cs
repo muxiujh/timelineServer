@@ -12,8 +12,8 @@ namespace JCore
         readonly string m_more = "...";
 
         // input
-        int m_size;
-        int m_total;
+        int m_itemsPerPage;
+        int m_itemsTotal;
         int m_pageIndex;
         int m_pageShow;
 
@@ -23,15 +23,15 @@ namespace JCore
         int m_pageEnd;
 
         public PageLogic(SPage spage) {
-            m_pageIndex = spage.Index;
-            m_size = spage.Size;
-            m_total = spage.Total;
+            m_pageIndex = spage.PageIndex;
+            m_itemsPerPage = spage.ItemsPerPage;
+            m_itemsTotal = spage.ItemsTotal;
             m_pageShow = spage.PageShow;
             calc();
         }
         
         void calc() {
-            m_pageTotal = (int)Math.Ceiling((float)m_total / m_size);
+            m_pageTotal = (int)Math.Ceiling((float)m_itemsTotal / m_itemsPerPage);
             if (m_pageIndex > m_pageTotal) {
                 m_pageIndex = m_pageTotal;
             }

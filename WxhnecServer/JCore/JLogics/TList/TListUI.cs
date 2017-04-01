@@ -25,7 +25,7 @@ namespace JCore
                     }
 
                     if (PropertyHelper.IsListShow(pro)) {
-                        var dict = Field2UI(pro, pro.GetValue(row));
+                        var dict = field2UI(pro, pro.GetValue(row));
                         field2UIMore(ref dict, pro);
                         filedAction(dict);
                     }
@@ -53,7 +53,7 @@ namespace JCore
                 var propertyList = type.GetProperties();
                 foreach (PropertyInfo pro in propertyList) {
                     if (PropertyHelper.IsListShow(pro)) {
-                        var dict = Field2UI(pro, null);
+                        var dict = field2UI(pro, null);
                         list.Add(dict);
                     }
                 }

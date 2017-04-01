@@ -6,14 +6,14 @@
     //
     public struct SPageNode
     {
-        public SPageNode(int index, string text, bool active = false) {
-            Index = index;
+        public SPageNode(int number, string text, bool isActive = false) {
+            Number = number;
             Text = text;
-            Active = active;
+            IsActive = isActive;
         }
 
-        public int Index;
+        public int Number;
         public string Text;
-        public bool Active;
+        public bool IsActive;
     }
 }

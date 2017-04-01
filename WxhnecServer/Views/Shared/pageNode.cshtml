@@ -3,7 +3,7 @@
 @using JCore;
 @model SPageNode
 @{
-    string active = Model.Active ? "active" : "";
+    string active = Model.IsActive ? "active" : "";
     Controller C = ViewBag.controller;
 }
-<li class='@active'><a href='@C.U("p", Model.Index)'>@Model.Text</a></li>
+<li class='@active'><a href='@C.U("p", Model.Number)'>@Model.Text</a></li>

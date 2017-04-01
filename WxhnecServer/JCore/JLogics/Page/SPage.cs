@@ -6,16 +6,16 @@
     //
     public struct SPage
     {
-        public SPage(int index, int size, int total, int pageShow = 10) {
-            Index = index;
-            Size = size;
-            Total = total;
+        public SPage(int pageIndex, int itemsPerPage, int itemsTotal, int pageShow = 10) {
+            PageIndex = pageIndex;
+            ItemsPerPage = itemsPerPage;
+            ItemsTotal = itemsTotal;
             PageShow = pageShow;
         }
 
-        public int Index;
-        public int Size;
-        public int Total;
+        public int PageIndex;
         public int PageShow;
+        public int ItemsPerPage;
+        public int ItemsTotal;
     }
 }
