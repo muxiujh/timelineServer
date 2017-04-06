@@ -111,8 +111,8 @@ namespace JCore
             }
         }
 
-        static public int? StringToInt(string value) {
-            int? result = null;
+        static public int StringToInt(string value, int defaultValue = 0) {
+            int result = defaultValue;
             while (true) {
                 if (string.IsNullOrWhiteSpace(value)) {
                     break;

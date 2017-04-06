@@ -46,9 +46,9 @@ namespace WxhnecServer
                     if (index != -1) {
                         string t1 = line.Substring(0, index);
                         string t2 = line.Substring(index + 1);
-                        int? key = THelper.StringToInt(t1);
-                        if (key != null) {
-                            result[key.Value] = t2;
+                        int key = THelper.StringToInt(t1, -1);
+                        if (key != -1) {
+                            result[key] = t2;
                         }
                         else {
                             result[t1] = t2;

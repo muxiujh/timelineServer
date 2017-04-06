@@ -94,8 +94,7 @@ namespace WxhnecServer
             ViewBag.t = t;
 
             // page
-            int? pageSizeObj = THelper.StringToInt(m_adminConfig["pageSize"]);
-            int pageSize = pageSizeObj.Value;
+            int pageSize = THelper.StringToInt(m_adminConfig["pageSize"]);
             int total = list.Count();
             ViewBag.spage = new SPage(p, pageSize, total);
 
