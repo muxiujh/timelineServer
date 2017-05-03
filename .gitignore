@@ -241,6 +241,7 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 
+*/Uploads/*
 *.Tests/*
 *.csproj
 */Models/DB/*.cs

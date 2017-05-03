@@ -6,7 +6,7 @@
 }
 
 <td>
-    @if (pic_path != null) {
+    @if (pic_path != null && pic_path.ToString() != "") {
         <img style="max-height:50px; max-width:50px;" src="/Upload/Show?size=small&pic=@pic_path" />
     }
     <span style="width: 30px;" class="jh-span column-list-edit"></span>

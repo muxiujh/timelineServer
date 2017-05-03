@@ -12,17 +12,9 @@
 
     <link id="css_begin" href="@ViewBag.ui/bootstrap3/css/cerulean.bootstrap.min.css?v=10" rel="stylesheet nofollow" type="text/css" />
 
+    <link href="@ViewBag.resourceAdmin/../css/global.css?v=10" rel="stylesheet nofollow" type="text/css" />
     <link href="@ViewBag.resourceAdmin/css/master.css?v=10" rel="stylesheet nofollow" type="text/css" />
 
-    <!--[if lt IE 9]>
-        <script src="@ViewBag.ui/jquery/html5shiv.min.js"type="text/javascript"></script>
-        <script src="@ViewBag.ui/jquery/respond.min.js"type="text/javascript"></script>
-        <style>
-        .img-thumbnail{max-width: 88%}
-        .btn {min-width:60px;}
-        .form-horizontal .control-label {text-align: right}
-        </style>
-    <![endif]-->
 
     <script type="text/javascript" src="@ViewBag.ui/jquery/jquery-1.9.1.min.js"></script>
 
@@ -64,49 +56,15 @@
 
     </div><!-- container -->
 
-    <!-------------- jh_template -------------->
-    <div id="jh_template" style="display:none">
-        <!-- button -->
-        <div class="upload_button">
-            <div text_loading='正在上传...'>上传图片</div>
-            <input type="file" name="file" class="upload_button_file" />
-        </div>
-        <!-- list -->
-        <ul class="upload_ul">
-            <li class="upload_li">
-                <img class="upload_image img-thumbnail" src="Uploads/Image/loading.gif" />
-                <input class="upload_file_id" type='hidden' />
-                <input class="upload_file_path" type='hidden' />
-                <iframe width="0" height="0" frameborder="0" style="display:none"></iframe>
-            </li>
-        </ul>
-        <!-- form -->
-        <form class="upload_form" method="post" enctype="multipart/form-data">
-            <input type="text" name="index" />
-        </form>
-    </div>
-    <!-------------- /jh_template -------------->
-    <!-------------- jh_upload -------------->
-    <script type="text/javascript" src="@ViewBag.ui/jquery/jh_upload.js"></script>
+    <!-------------- jh_uploadMany -------------->
     <script language="javascript">
 
-$(function () {
-
-$(".upload_one").jh_upload({
-    validation: {
-        itemLimit: 1,
-        itemArray: false,
-        allowedExtensions:['jpg', 'jpeg', 'png']
-    },
-    upload_delete: false,
-    url: '/Upload/Index'
-    //url: '?c=agent&rc=upload&html=1&form=company'
-});
-
-});
+    $(function () {
+        $(".uploadMany").jh_uploadMany();
+    });
 
     </script>
-    <!-------------- /jh_upload -------------->
+    <!-------------- /jh_uploadMany -------------->
 
 
     <script type="text/javascript" src="@ViewBag.ui/bootstrap3/js/bootstrap.js"></script>
@@ -123,6 +81,7 @@ $(".upload_one").jh_upload({
     <script type="text/javascript" src="@ViewBag.ui/jquery/jh_node.js"></script>
     <script type="text/javascript" src="@ViewBag.ui/jquery/jh_color.js"></script>
     <script type="text/javascript" src="@ViewBag.ui/jquery/jh_placeholder.js"></script>
+    <script type="text/javascript" src="@ViewBag.ui/jquery/jh_uploadMany.js"></script>
     <script type="text/javascript" src="@ViewBag.ui/jquery/jquery.lazyload.min.js"></script>
     <script type="text/javascript" src="@ViewBag.ui/jquery/superslide.2.1.js"></script>
 

@@ -1,0 +1,33 @@
+﻿@using JCore;
+@model System.Collections.Generic.Dictionary<TF, object>
+@{
+    Layout = null;
+    string picList = Model[TF.name] + "[]";
+}
+
+<div class="form-group">
+    <label class="col-xs-2 control-label">@Model[TF.title]</label>
+    <div class="col-xs-5 uploadMany" jh_arg="picLimit=@Model[TF.dataSource]">
+        <div class="upload_button">
+            <div text_loading="正在上传...">上传图片</div>
+            <input type="file" name="file" class="upload_button_file" multiple />
+        </div>
+
+        <input name="@Model[TF.name]" class="picListInput" type="hidden" value="@Model[TF.value]" />
+        <div class="picList">
+
+            <div class="picBox">
+                <input class="picInput" type="hidden" name="@picList" />
+                <img class="img-thumbnail" src="@ViewBag.ui/images/loading.gif"/>
+                <span title="上移" class="glyphicon glyphicon-arrow-up picUp"></span>
+                <span title="下移" class="glyphicon glyphicon-arrow-down picDown"></span>
+                <span title="删除" class="glyphicon glyphicon-remove picDelete"></span>
+            </div>
+
+        </div>
+        <img class="picLoading img-thumbnail" src="@ViewBag.ui/images/loading.gif" />
+
+    </div>
+    <span class='help-block'></span>
+</div>
+

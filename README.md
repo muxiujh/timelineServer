@@ -1,0 +1,3 @@
+asp.net的通用后台管理系统。
+使用EntityFramework和linq的MVC5进行搭建，C#语言编写并且做了一套通用的系统架构。
+UI使用bootstrap。
