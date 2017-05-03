@@ -47,6 +47,9 @@ namespace JCore
                 case TE.tel:
                     widget = TE.text.ToString();
                     break;
+                case TE.picture:
+                    widget = TE.hidden.ToString();
+                    break;
                 default:
                     widget = element.Key.ToString();
                     break;
@@ -110,9 +113,20 @@ namespace JCore
                 }
                 else if (collection.AllKeys.Contains(pro.Name)) {
                     object val = collection[pro.Name];
+
+                    // refer
+                    var key = PropertyHelper.GetTFieldValue(pro, TF.refer);
+                    if(key != null) {
+                        val = collection.AllKeys.Contains(key) ? collection[key] : "";
+
+                        // get first
+                        if(PropertyHelper.IsElement(pro, TE.picture)) {
+                            val = THelper.GetFirstString(val.ToString());
+                        }
+                    }
                     THelper.ConvertToType(pro.PropertyType, ref val);
-                    pro.SetValue(row, val);                    
-                }                    
+                    pro.SetValue(row, val);
+                }
             }
             return row;
         }

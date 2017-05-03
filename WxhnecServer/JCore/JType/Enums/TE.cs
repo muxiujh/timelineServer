@@ -17,6 +17,7 @@
         select,
         textarea,
         sub,
+        pictureList,
         picture
     }
 

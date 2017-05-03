@@ -76,5 +76,43 @@ namespace JCore
             }
             return result;
         }
+
+        static public string GetTFieldValue(PropertyInfo pro, TF key) {
+            string result = null;
+            while (true) {
+                var fieldList = pro.GetCustomAttributes<TField>();
+                if (fieldList == null) {
+                    break;
+                }
+
+                foreach (TField field in fieldList) {
+                    if (field.Key == key) {
+                        result = field.Value.ToString();
+                        break;
+                    }
+                }                
+
+                break;
+            }
+            return result;
+        }
+
+        static public bool IsElement(PropertyInfo pro, TE key) {
+            bool result = false;
+            while (true) {
+                var element = pro.GetCustomAttribute<TElement>();
+                if (element == null) {
+                    break;
+                }
+
+                if(element.Key == key) {
+                    result = true;
+                    break;
+                }
+
+                break;
+            }
+            return result;
+        }
     }
 }

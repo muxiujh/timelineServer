@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace JCore
@@ -139,5 +140,13 @@ namespace JCore
             return result;
         }
 
+        static public string GetFirstString(string content, char comma = ',') {
+            if (string.IsNullOrWhiteSpace(content)) {
+                return "";
+            }
+
+            var arr = content.Split(comma);
+            return arr.First();
+        }
     }
 }
