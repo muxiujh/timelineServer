@@ -10,37 +10,30 @@ namespace WxhnecServer
 {
     public class AdminEntityController : AdminController
     {
+        TQueryLogic m_logic = new TQueryLogic();
+        string m_namespace { get { return GetType().Namespace; } }
+
         [HttpPost]
         public string RowSave(FormCollection collection) {
             string t = Request.QueryString["t"];
-            if (!checkModel(t))
-                return Error(true);
 
-            var entity = getTEntity(t);
-            TEntityUI entityUI = new TEntityUI();
+            if (!m_logic.InitQuery(m_namespace, t)) {
+                return error();
+            }
 
-            var row = entityUI.UI2Row(collection, entity.TType);
-            var id = collection.Get("id");
-            bool result;
-            if (string.IsNullOrEmpty(id)) {
-                result = entity.Add(row) != null;
-            }
-            else {
-                result = entity.Modify(row);
-            }
+            bool result = m_logic.SaveRow(collection);
 
             JObject jo = new JObject();
             if (result) {
                 jo["msg"] = "success!";
 
+                var id = collection.Get("id");
                 if (string.IsNullOrEmpty(id)) {
                     jo["url"] = "/AdminEntity/List?t=" + t;
                 }
             }
             else {
-                Dictionary<string, string> errors = entity.Errors;
-                var error = errors.First();
-                jo["msg"] = error.Key + " " + error.Value; ;
+                jo["msg"] = m_logic.Error;
             }
 
             return JsonConvert.SerializeObject(jo);
@@ -51,26 +44,13 @@ namespace WxhnecServer
             if (!checkLogin())
                 return m_login;
 
-            if (!checkModel(t))
-                return Error();
-
-            // entityClass
-            var entity = getTEntity(t);
-            ViewBag.title = entity.GetTitle();
-
-            // row
-            object row = null;
-            if (id > 0) {
-                string detail = t + "_detail";
-                if (entity.TType.GetProperty(detail) == null) {
-                    detail = null;
-                }
-                row = entity.FindRow(id, detail);
-            }
-            else {
-                row = Activator.CreateInstance(entity.TType);
+            if (!m_logic.InitQuery(m_namespace, t)) {
+                return error();
             }
 
+            object row = m_logic.GetRow(id);
+
+            ViewBag.title = m_logic.GetTitle();
             ViewBag.UrlSave = Request.RawUrl.Replace("Row", "RowSave");
 
             return View(row);
@@ -81,61 +61,35 @@ namespace WxhnecServer
             if (!checkLogin())
                 return m_login;
 
-            if (!checkModel(t))
-                return Error();
-
-            // listClass
-            var list = getTList(t);
-            ViewBag.title = list.GetTitle();
+            if (!m_logic.InitQuery(m_namespace, t)) {
+                return error();
+            }
 
             // listUI
             TListUI listUI = new TListUI();
-            ViewBag.listDict = listUI.Class2UI(getFullName(t));
+            ViewBag.listDict = listUI.Class2UI(m_logic.FullName);
             ViewBag.t = t;
 
             // page
             int pageSize = THelper.StringToInt(m_adminConfig["pageSize"]);
-            int total = list.Count();
-            ViewBag.spage = new SPage(p, pageSize, total);
-
-            // list
-            var result = list.TLimit(pageSize, p).ToList();
+            var result = m_logic.GetList(p, pageSize, true);
+            ViewBag.spage = m_logic.Paging;
+            ViewBag.title = m_logic.GetTitle();
 
             return View(result);
         }
 
-        bool checkModel(string t) {
-            bool result = false;
-            while (true) {
-                if (string.IsNullOrWhiteSpace(t)) {
-                    m_error = "t is need.";
-                    break;
-                }
-
-                Type type = Type.GetType(getFullName(t));
-                if (type == null) {
-                    m_error = "no " + t;
-                    break;
-                }
-
-                result = true;
-                break;
+        public dynamic error(bool isJson = false) {
+            if (isJson) {
+                JObject jo = new JObject();
+                jo["msg"] = m_logic.Error;
+                return JsonConvert.SerializeObject(jo);
             }
-            return result;
+            else {
+                ViewBag.Error = m_logic.Error;
+                return View("~/Views/Admin/Error.cshtml");
+            }
         }
 
-        string getFullName(string t) {
-            return GetType().Namespace + "." + t;
-        }
-
-        dynamic getTEntity(string t) {
-            Type generic = typeof(TEntityLogic<>);
-            return THelper.CreateInstance(generic, getFullName(t));
-        }
-
-        dynamic getTList(string t) {
-            Type generic = typeof(TListLogic<>);
-            return THelper.CreateInstance(generic, getFullName(t));
-        }
     }
 }

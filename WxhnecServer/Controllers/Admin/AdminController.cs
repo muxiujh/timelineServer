@@ -11,7 +11,6 @@ namespace WxhnecServer
     {
         protected ActionResult m_login = null;
         protected dynamic m_adminConfig;
-        protected string m_error;
 
         public AdminController() {
             ViewBag.controller = this;
@@ -36,18 +35,6 @@ namespace WxhnecServer
                 break;
             }
             return result;
-        }
-
-        public dynamic Error(bool isJson = false) {
-            if (isJson) {
-                JObject jo = new JObject();
-                jo["msg"] = m_error;
-                return JsonConvert.SerializeObject(jo);
-            }
-            else {
-                ViewBag.Error = m_error;
-                return View("~/Views/Admin/Error.cshtml");
-            }
         }
 
         public ActionResult Info() {

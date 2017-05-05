@@ -1,7 +1,0 @@
-﻿[
-  {
-    "title": "活动列表",
-    "action": "AdminEntity/List",
-    "template": "pre_activity"
-  }
-]

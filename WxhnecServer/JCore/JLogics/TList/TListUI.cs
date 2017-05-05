@@ -91,6 +91,7 @@ namespace JCore
                     listElement = TE.text;
                     break;
                 case TE.picture:
+                case TE.pictureList:
                     listElement = TE.picture;
                     break;
                 default:
