@@ -21,6 +21,7 @@
         public const string NoLargeFile = "NoLargeFile";
         public const string OssAdd = "OssAdd";
         public const string CreateTrue = "CreateTrue";
+        public const string AddPic = "AddPic";
     }
 	
 }

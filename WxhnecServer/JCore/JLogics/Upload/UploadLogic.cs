@@ -148,21 +148,34 @@ namespace JCore
                     break;
                 }
 
-                // name
+                // md5
                 string md5 = FileHelper.GetMD5(tempFile);
                 if(md5 == null) {
                     Error = SUploadError.MD5;
                     break;
                 }
-                string name = FileHelper.SubMD5(md5);
 
-                // dir, path
+                // FindPic
+                var pictureModel = new PictureModel();
+                if (pictureModel.FindPic(md5)) {
+                    result = pictureModel.Row.path;
+                    break;
+                }
+
+                // name, dir, path
+                string name = FileHelper.SubMD5(md5);
                 string shortDir = FileHelper.GetDateDir();
                 string shortPath = FileHelper.GetPath(shortDir, name, format.ToString());
 
                 // thumb
                 if(!PsHelper.Thumb(tempFile, m_config.Dir + shortPath)) {
                     Error = SUploadError.Thumb;
+                    break;
+                }
+
+                // AddPic
+                if(!pictureModel.AddPic(md5, shortPath)) {
+                    Error = SUploadError.AddPic;
                     break;
                 }
 
