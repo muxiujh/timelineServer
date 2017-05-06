@@ -59,11 +59,18 @@ namespace JCore
             return this;
         }
 
-        public TListLogic<T> TLimit(int pageSize, int page = 1) {
+        public TListLogic<T> TLimit(int pageSize = 0, int page = 1) {
             while (true) {
                 // take
                 if(pageSize <= 0) {
-                    break;
+                    var listSize = TType.GetCustomAttribute<TListSize>();
+                    if (listSize == null) {
+                        break;
+                    }
+                    pageSize = listSize.Key;
+                    if (pageSize <= 0) {
+                        break;
+                    }
                 }
                 m_take = pageSize;
 

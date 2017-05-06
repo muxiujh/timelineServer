@@ -44,7 +44,7 @@ namespace JCore
             return m_init;
         }
 
-        public object GetList(int pageIndex, int pageSize, bool isPaging = false) {
+        public object GetList(int pageIndex, int pageSize = 0, bool isPaging = false) {
             if(!m_init) {
                 return null;
             }

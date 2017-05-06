@@ -17,7 +17,7 @@ namespace WxhnecServer
                 return error();
             }
 
-            var result = m_logic.GetList(p, 100);
+            var result = m_logic.GetList(p);
 
             return JsonConvert.SerializeObject(result);
         }
