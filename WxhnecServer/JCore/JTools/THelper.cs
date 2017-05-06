@@ -140,7 +140,11 @@ namespace JCore
             return result;
         }
 
-        static public string GetFirstString(string content, char comma = ',') {
+        static public string GetFirstString(string content) {
+            return GetFirstStringRaw(content, ',');
+        }
+
+        static public string GetFirstStringRaw(string content, char comma) {
             if (string.IsNullOrWhiteSpace(content)) {
                 return "";
             }

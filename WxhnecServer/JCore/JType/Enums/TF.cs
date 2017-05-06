@@ -16,6 +16,7 @@
         value,
         widget,
         refer,
+        parse,
         listElement
     }
 	

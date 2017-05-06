@@ -115,15 +115,17 @@ namespace JCore
                     object val = collection[pro.Name];
 
                     // refer
-                    var key = PropertyHelper.GetTFieldValue(pro, TF.refer);
-                    if(key != null) {
-                        val = collection.AllKeys.Contains(key) ? collection[key] : "";
-
-                        // get first
-                        if(PropertyHelper.IsElement(pro, TE.picture)) {
-                            val = THelper.GetFirstString(val.ToString());
-                        }
+                    var refer = PropertyHelper.GetTFieldValue(pro, TF.refer);
+                    if(refer != null) {
+                        val = collection.AllKeys.Contains(refer) ? collection[refer] : "";
                     }
+
+                    // parse
+                    var parse = PropertyHelper.GetTFieldValue(pro, TF.parse);
+                    if (parse != null) {
+                        val = JMethod.Run<THelper>(parse, new object[] { val });
+                    }
+
                     THelper.ConvertToType(pro.PropertyType, ref val);
                     pro.SetValue(row, val);
                 }
