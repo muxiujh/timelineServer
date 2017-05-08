@@ -12,5 +12,8 @@ namespace JCore
                 return m_configModel.Cache();
             }
         }
+
+        public const string Split1 = "|+|";
+        public const string Split2 = "|_|";
     }
 }

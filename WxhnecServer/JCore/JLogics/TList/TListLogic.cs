@@ -101,6 +101,11 @@ namespace JCore
                     break;
                 }
 
+                // convert type
+                if (value.GetType() != property.PropertyType) {
+                    THelper.ConvertToType(property.PropertyType, ref value);
+                }
+
                 ParameterExpression parameter = Expression.Parameter(TType);
                 Expression left = Expression.Property(parameter, property);
                 Expression right = Expression.Constant(value);

@@ -17,7 +17,7 @@ namespace WxhnecServer
         public string RowSave(FormCollection collection) {
             string t = Request.QueryString["t"];
 
-            if (!m_logic.InitQuery(m_namespace, t)) {
+            if (!m_logic.InitQuery(m_namespace, t, true)) {
                 return error();
             }
 
@@ -44,7 +44,7 @@ namespace WxhnecServer
             if (!checkLogin())
                 return m_login;
 
-            if (!m_logic.InitQuery(m_namespace, t)) {
+            if (!m_logic.InitQuery(m_namespace, t, true)) {
                 return error();
             }
 

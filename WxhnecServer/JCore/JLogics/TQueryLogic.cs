@@ -8,7 +8,6 @@ namespace JCore
     public class TQueryLogic
     {
         string m_t;
-        bool m_init;
         dynamic m_object;
 
         public string FullName { get; set; }
@@ -16,9 +15,8 @@ namespace JCore
         public string Error { get; set; }
         Dictionary<string, string> Errors { get; set; }
 
-        public bool InitQuery(string nameSpace, string t)
-        {
-            m_init = false;
+        public bool InitQuery(string nameSpace, string t, bool isRow = false) {
+            bool result = false;
             while (true) {
                 if (string.IsNullOrWhiteSpace(nameSpace)) {
                     Error = "namespace is need.";
@@ -38,18 +36,37 @@ namespace JCore
                     break;
                 }
 
-                m_init = true;
+                m_object = isRow ? getTEntity() : getTList();
+                result = m_object != null;
                 break;
             }
-            return m_init;
+            return result;
+        }
+
+        public TQueryLogic Condition(string condition) {
+            while (true) {
+                if (m_object == null) {
+                    break;
+                }
+
+                if (string.IsNullOrEmpty(condition)) {
+                    break;
+                }
+
+                var dict = THelper.String2Dict(condition, G.Split1, G.Split2);
+                foreach (var item in dict) {
+                    m_object.TWhere(item.Key, item.Value);
+                }
+
+                break;
+            }
+            return this;
         }
 
         public object GetList(int pageIndex, int pageSize = 0, bool isPaging = false) {
-            if(!m_init) {
+            if (m_object == null) {
                 return null;
             }
-
-            m_object = getTList();
 
             object result = m_object.TLimit(pageSize, pageIndex).ToList();
             if (isPaging) {
@@ -61,11 +78,9 @@ namespace JCore
         }
 
         public object GetRow(int id = 0) {
-            if (!m_init) {
+            if (m_object == null) {
                 return null;
             }
-
-            m_object = getTEntity();
 
             object row = null;
             if (id > 0) {
@@ -82,12 +97,11 @@ namespace JCore
             return row;
         }
 
-        public bool SaveRow(NameValueCollection collection) {           
-            if (!m_init) {
+        public bool SaveRow(NameValueCollection collection) {
+            if (m_object == null) {
                 return false;
             }
-
-            var m_object = getTEntity();
+            
             TEntityUI entityUI = new TEntityUI();
 
             var row = entityUI.UI2Row(collection, m_object.TType);

@@ -10,21 +10,22 @@ namespace WxhnecServer
     {
         TQueryLogic m_logic = new TQueryLogic();
         string m_namespace { get { return GetType().Namespace; } }
+        protected bool m_json = true;
 
         [HttpGet]
-        public string List(string t = null, int p = 1) {
+        public object List(string t = null, string c = null, int p = 1) {
             if (!m_logic.InitQuery(m_namespace, t)) {
                 return error();
             }
 
-            var result = m_logic.GetList(p);
+            var result = m_logic.Condition(c).GetList(p);
 
-            return JsonConvert.SerializeObject(result);
+            return toJson(result);
         }
 
         [HttpGet]
-        public string Row(int id = 0, string t = null) {
-            if (!m_logic.InitQuery(m_namespace, t)) {
+        public object Row(int id = 0, string t = null) {
+            if (!m_logic.InitQuery(m_namespace, t, true)) {
                 return error();
             }
 
@@ -38,13 +39,23 @@ namespace WxhnecServer
                 }
             });
 
-            return JsonConvert.SerializeObject(result);
+            return toJson(result);
         }
+        
 
-        string error() {
+        object error() {
             JObject jo = new JObject();
             jo["msg"] = m_logic.Error;
-            return JsonConvert.SerializeObject(jo);
+            return toJson(jo);
+        }
+
+        protected object toJson(object obj) {
+            if(m_json == true) {
+                return JsonConvert.SerializeObject(obj);
+            }
+            else {
+                return obj;
+            }
         }
 
     }

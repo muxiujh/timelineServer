@@ -152,5 +152,43 @@ namespace JCore
             var arr = content.Split(comma);
             return arr.First();
         }
+
+        ///
+        /// <param name="content">key1|_|value1|+|key2|_|value2</param>
+        ///
+        static public Dictionary<string, string> String2Dict(string content, string split1, string split2) {
+            var dict = new Dictionary<string, string>();
+            if (string.IsNullOrWhiteSpace(content)
+                || string.IsNullOrEmpty(split1)
+                || string.IsNullOrEmpty(split2)) {
+                return dict;
+            }
+
+            var list = SplitString(content, split1);
+            foreach (var item in list) {
+                var pair = SplitString(item, split2);
+                if(pair.Count() < 2) {
+                    continue;
+                }
+                var key = pair[0];
+                var value = pair[1];
+                if(string.IsNullOrEmpty(key) || string.IsNullOrEmpty(value)) {
+                    continue;
+                }
+                dict.Add(key, value);
+            }
+
+            return dict;
+        }
+
+        static public string[] SplitString(string content, string comma) {
+            if (string.IsNullOrEmpty(content)) {
+                return new string[] { "" };
+            }
+
+            char tempComma = '&';
+            content = content.Replace(comma, tempComma.ToString());
+            return content.Split(tempComma);
+        }
     }
 }
