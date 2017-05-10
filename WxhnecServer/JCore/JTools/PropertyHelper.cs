@@ -63,15 +63,15 @@ namespace JCore
             }
         }
 
-        static public bool IsListShow(PropertyInfo pro) {
+        static public bool HasAttribute<TAttribute>(PropertyInfo pro) where TAttribute : Attribute {
             bool result = false;
             while (true) {
-                var attr = pro.GetCustomAttribute<TListShow>();
-                if(attr == null) {
+                var attr = pro.GetCustomAttribute<TAttribute>();
+                if (attr == null) {
                     break;
                 }
 
-                result = attr.Enable;
+                result = true;
                 break;
             }
             return result;

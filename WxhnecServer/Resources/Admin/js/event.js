@@ -9,25 +9,25 @@ $(function(){
 $.jh_add_events({
     search_table : {
         click : function (_this) {
+            var s1 = "l__l";
+            var s2 = "l_l";
             var _form = _this.parents('form');
             var keyArr = _form.find('[condition_key]');
             var valueArr = _form.find('[condition_value]');
-            var compareArr = _form.find('[condition_compare]');
             var count = keyArr.length;
             var condition = '';
             var comma = '';
-            for(i = 0; i < count; ++i){
+            for (i = 0; i < count; ++i) {
                 var key = keyArr[i].value;
                 var value = valueArr[i].value;
-                var compare = compareArr[i].value;
-                if(value != '')
-                    condition += comma + key + '==' + compare + '==' + value;
-                comma = '&&';
+                if (value != '') {
+                    condition += comma + key + s2 + value;
+                    comma = s1;
+                }
             }
-            condition = encodeURIComponent(condition);
-            var url = _form.attr('action') + "&condition=" + condition;
+            var url = _form.attr('action') + "&c=" + condition;
             document.location.href = url;
-        }        
+        }
     },
     input_modify : {
         blur : function (_this) {

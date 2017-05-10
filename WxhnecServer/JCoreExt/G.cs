@@ -13,7 +13,7 @@ namespace JCore
             }
         }
 
-        public const string Split1 = "|+|";
-        public const string Split2 = "|_|";
+        public const string Split1 = "l__l";
+        public const string Split2 = "l_l";
     }
 }

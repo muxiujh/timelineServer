@@ -24,7 +24,7 @@ namespace JCore
                         key = pro.GetValue(row);
                     }
 
-                    if (PropertyHelper.IsListShow(pro)) {
+                    if (PropertyHelper.HasAttribute<TListShow>(pro)) {
                         var dict = field2UI(pro, pro.GetValue(row));
                         field2UIMore(ref dict, pro);
                         filedAction(dict);
@@ -52,9 +52,33 @@ namespace JCore
                 list = new List<TFDictionary>();
                 var propertyList = type.GetProperties();
                 foreach (PropertyInfo pro in propertyList) {
-                    if (PropertyHelper.IsListShow(pro)) {
+                    if (PropertyHelper.HasAttribute<TListShow>(pro)) {
                         var dict = field2UI(pro, null);
                         list.Add(dict);
+                    }
+                }
+
+                break;
+            }
+            return list;
+        }
+
+        public List<string> Class2Search(string tNamespaceClass) {
+            var list = new List<string>();
+            while (true) {
+                if (string.IsNullOrEmpty(tNamespaceClass)) {
+                    break;
+                }
+
+                Type type = Type.GetType(tNamespaceClass);
+                if (type == null) {
+                    break;
+                }
+
+                var propertyList = type.GetProperties();
+                foreach (PropertyInfo pro in propertyList) {
+                    if (PropertyHelper.HasAttribute<TListSearch>(pro)) {
+                        list.Add(pro.Name);
                     }
                 }
 

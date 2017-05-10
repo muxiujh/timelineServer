@@ -57,7 +57,7 @@ namespace WxhnecServer
         }
 
         [HttpGet]
-        public ActionResult List(string t = null, int p = 1) {
+        public ActionResult List(string t = null, string c = null, int p = 1) {
             if (!checkLogin())
                 return m_login;
 
@@ -72,9 +72,16 @@ namespace WxhnecServer
 
             // page
             int pageSize = THelper.StringToInt(m_adminConfig["pageSize"]);
-            var result = m_logic.GetList(p, pageSize, true);
+            var result = m_logic.Condition(c).GetList(p, pageSize, true);
             ViewBag.spage = m_logic.Paging;
             ViewBag.title = m_logic.GetTitle();
+
+            // filter
+            var searchFields = listUI.Class2Search(m_logic.FullName);
+            ViewBag.filter = THelper.GetFilter(searchFields, m_logic.CompareDict);
+            if (c != null) {
+                ViewBag.filterString = c.Replace(G.Split1, "&").Replace(G.Split2, "=");
+            }
 
             return View(result);
         }

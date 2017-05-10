@@ -1,0 +1,46 @@
+﻿@using JCore;
+
+@{
+    Layout = null;
+}
+
+<div class="panel-group accordion" id="accordion">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <span style=" cursor pointer" data-toggle="collapse" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                    <button class="btn btn-sm btn-default">筛 选</button> &nbsp; &nbsp;  @ViewBag.filterString
+                </span>
+            </h4>
+        </div>
+
+        <div id="collapseOne" class="panel-collapse collapse">
+            <div class="panel-body">
+                <form action="?t=@ViewBag.t" class="form-horizontal jh-div-xxl-sub" role="form" method="get">
+
+                    @foreach (var compare in ViewBag.filter) {
+                        <div class="form-group">
+                            <label class="col-xs-1 control-label">@compare.Key</label>
+
+                            <label class="col-xs-1 control-label" style="width:20px">=</label>
+
+                            <div class="col-xs-2 ">
+                                <input type="hidden" condition_key="1" value="@compare.Key" />
+                                <input type="text" condition_value="1" class="form-control" autocomplete="off" value="@compare.Value" />
+                            </div>
+                        </div>
+                    }
+
+                    <br />
+                    <div class="form-group">
+                        <div class="col-xs-offset-1 col-xs-5 ">
+                            <a class="btn btn-primary" jh_node="search_table">确 定</a>
+                        </div>
+                    </div>
+
+                    </form>
+                </div>
+        </div>
+
+    </div>
+</div>

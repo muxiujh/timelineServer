@@ -13,7 +13,8 @@ namespace JCore
         public string FullName { get; set; }
         public SPage Paging { get; set; }
         public string Error { get; set; }
-        Dictionary<string, string> Errors { get; set; }
+        public Dictionary<string, string> Errors { get; set; }
+        public Dictionary<string, SCompare> CompareDict { get; set; }
 
         public bool InitQuery(string nameSpace, string t, bool isRow = false) {
             bool result = false;
@@ -53,9 +54,10 @@ namespace JCore
                     break;
                 }
 
-                var dict = THelper.String2Dict(condition, G.Split1, G.Split2);
-                foreach (var item in dict) {
-                    m_object.TWhere(item.Key, item.Value);
+                CompareDict = THelper.String2CompareDict(condition);
+                foreach (var item in CompareDict) {
+                    var compare = item.Value;
+                    m_object.TWhere(compare.Key, compare.Value, compare.Operate);
                 }
 
                 break;

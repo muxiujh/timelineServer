@@ -153,34 +153,6 @@ namespace JCore
             return arr.First();
         }
 
-        ///
-        /// <param name="content">key1|_|value1|+|key2|_|value2</param>
-        ///
-        static public Dictionary<string, string> String2Dict(string content, string split1, string split2) {
-            var dict = new Dictionary<string, string>();
-            if (string.IsNullOrWhiteSpace(content)
-                || string.IsNullOrEmpty(split1)
-                || string.IsNullOrEmpty(split2)) {
-                return dict;
-            }
-
-            var list = SplitString(content, split1);
-            foreach (var item in list) {
-                var pair = SplitString(item, split2);
-                if(pair.Count() < 2) {
-                    continue;
-                }
-                var key = pair[0];
-                var value = pair[1];
-                if(string.IsNullOrEmpty(key) || string.IsNullOrEmpty(value)) {
-                    continue;
-                }
-                dict.Add(key, value);
-            }
-
-            return dict;
-        }
-
         static public string[] SplitString(string content, string comma) {
             if (string.IsNullOrEmpty(content)) {
                 return new string[] { "" };
@@ -189,6 +161,62 @@ namespace JCore
             char tempComma = '&';
             content = content.Replace(comma, tempComma.ToString());
             return content.Split(tempComma);
+        }
+
+        ///
+        /// <param name="content">key1l_lvalue1l__lkey2l_lvalue2></param>
+        ///
+        static public Dictionary<string, SCompare> String2CompareDict(string content, string split1 = G.Split1, string split2 = G.Split2) {
+            var result = new Dictionary<string, SCompare>();
+            if (string.IsNullOrWhiteSpace(content)
+                || string.IsNullOrEmpty(split1)
+                || string.IsNullOrEmpty(split2)) {
+                return result;
+            }
+
+            var list = SplitString(content, split1);
+            foreach (var item in list) {
+                var pair = SplitString(item, split2);
+                var count = pair.Count();
+                if(count < 2) {
+                    continue;
+                }
+                SCompare compare;
+                compare.Key = pair[0];
+                compare.Value = pair[1];
+                compare.Operate = count < 3 ? op.eq : pair[2];
+                if(string.IsNullOrEmpty(compare.Key) || string.IsNullOrEmpty(compare.Value)) {
+                    continue;
+                }
+                result.Add(compare.Key, compare);
+            }
+
+            return result;
+        }
+        
+        static public List<SCompare> GetFilter(List<string> searchFields, Dictionary<string, SCompare> compareDict) {
+            var result = new List<SCompare>();
+            while (true) {
+                if (searchFields == null || searchFields.Count <= 0) {
+                    break;
+                }
+
+                if(compareDict == null) {
+                    compareDict = new Dictionary<string, SCompare>();
+                }
+
+                foreach (var key in searchFields) {
+                    SCompare compare;
+                    if(!compareDict.TryGetValue(key, out compare)) {
+                        compare.Key = key;
+                        compare.Value = null;
+                        compare.Operate = op.eq;
+                    }
+                    result.Add(compare);
+                }
+                break;
+            }
+            return result;
         }
     }
 }
