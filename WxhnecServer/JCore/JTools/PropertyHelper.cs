@@ -56,8 +56,7 @@ namespace JCore
 
                 TF key = (TF)Enum.Parse(type, field.Name);
                 object temp;
-                dict.TryGetValue(key, out temp);
-                if (temp == null) {
+                if (!dict.TryGetValue(key, out temp)) {
                     dict[key] = null;
                 }
             }

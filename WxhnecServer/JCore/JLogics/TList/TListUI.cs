@@ -63,8 +63,8 @@ namespace JCore
             return list;
         }
 
-        public List<string> Class2Search(string tNamespaceClass) {
-            var list = new List<string>();
+        public List<SCompare> Class2Search(string tNamespaceClass) {
+            var list = new List<SCompare>();
             while (true) {
                 if (string.IsNullOrEmpty(tNamespaceClass)) {
                     break;
@@ -78,7 +78,12 @@ namespace JCore
                 var propertyList = type.GetProperties();
                 foreach (PropertyInfo pro in propertyList) {
                     if (PropertyHelper.HasAttribute<TListSearch>(pro)) {
-                        list.Add(pro.Name);
+                        var title = PropertyHelper.GetTFieldValue(pro, TF.title);
+                        if(string.IsNullOrEmpty(title)) {
+                            title = pro.Name;
+                        }
+                        SCompare compare = new SCompare(pro.Name, null, null, title);
+                        list.Add(compare);
                     }
                 }
 

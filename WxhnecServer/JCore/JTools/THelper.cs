@@ -185,7 +185,8 @@ namespace JCore
                 compare.Key = pair[0];
                 compare.Value = pair[1];
                 compare.Operate = count < 3 ? op.eq : pair[2];
-                if(string.IsNullOrEmpty(compare.Key) || string.IsNullOrEmpty(compare.Value)) {
+                compare.Title = null;
+                if (string.IsNullOrEmpty(compare.Key) || string.IsNullOrEmpty(compare.Value)) {
                     continue;
                 }
                 result.Add(compare.Key, compare);
@@ -194,7 +195,7 @@ namespace JCore
             return result;
         }
         
-        static public List<SCompare> GetFilter(List<string> searchFields, Dictionary<string, SCompare> compareDict) {
+        static public List<SCompare> GetFilter(List<SCompare> searchFields, Dictionary<string, SCompare> compareDict) {
             var result = new List<SCompare>();
             while (true) {
                 if (searchFields == null || searchFields.Count <= 0) {
@@ -205,13 +206,14 @@ namespace JCore
                     compareDict = new Dictionary<string, SCompare>();
                 }
 
-                foreach (var key in searchFields) {
+                foreach (var item in searchFields) {
                     SCompare compare;
-                    if(!compareDict.TryGetValue(key, out compare)) {
-                        compare.Key = key;
+                    if(!compareDict.TryGetValue(item.Key, out compare)) {
+                        compare.Key = item.Key;
                         compare.Value = null;
                         compare.Operate = op.eq;
                     }
+                    compare.Title = item.Title;
                     result.Add(compare);
                 }
                 break;
