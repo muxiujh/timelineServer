@@ -15,6 +15,7 @@ namespace JCore
         public string Error { get; set; }
         public Dictionary<string, string> Errors { get; set; }
         public Dictionary<string, SCompare> CompareDict { get; set; }
+        public Dictionary<string, object> PresetDict { get; set; }
 
         public bool InitQuery(string nameSpace, string t, bool isRow = false) {
             bool result = false;
@@ -36,7 +37,7 @@ namespace JCore
                     Error = "no type " + FullName;
                     break;
                 }
-
+                
                 m_object = isRow ? getTEntity() : getTList();
                 result = m_object != null;
                 break;
@@ -68,6 +69,12 @@ namespace JCore
         public object GetList(int pageIndex, int pageSize = 0, bool isPaging = false) {
             if (m_object == null) {
                 return null;
+            }
+
+            if (PresetDict != null) {
+                foreach (var item in PresetDict) {
+                    m_object.TWhere(item.Key, item.Value, op.eq);
+                }
             }
 
             object result = m_object.TLimit(pageSize, pageIndex).ToList();
@@ -103,9 +110,10 @@ namespace JCore
             if (m_object == null) {
                 return false;
             }
-            
+
             TEntityUI entityUI = new TEntityUI();
 
+            THelper.MergeCollection(collection, PresetDict);
             var row = entityUI.UI2Row(collection, m_object.TType);
             var id = collection.Get("id");
             bool result = false;

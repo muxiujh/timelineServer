@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Reflection;
 
@@ -44,7 +45,7 @@ namespace JCore
             if(obj == null) {
                 return null;
             }
-            
+
             Type type = obj.GetType();
             if(type.BaseType != typeof(Object)) {
                 type = type.BaseType;
@@ -127,7 +128,7 @@ namespace JCore
             }
             return result;
         }
-        
+
         static public object CreateInstance(Type generic, string tNamespaceClass) {
             object result = null;
             try {
@@ -181,20 +182,20 @@ namespace JCore
                 if(count < 2) {
                     continue;
                 }
+                if (string.IsNullOrEmpty(pair[0]) || string.IsNullOrEmpty(pair[1])) {
+                    continue;
+                }
                 SCompare compare;
                 compare.Key = pair[0];
                 compare.Value = pair[1];
                 compare.Operate = count < 3 ? op.eq : pair[2];
                 compare.Title = null;
-                if (string.IsNullOrEmpty(compare.Key) || string.IsNullOrEmpty(compare.Value)) {
-                    continue;
-                }
                 result.Add(compare.Key, compare);
             }
 
             return result;
         }
-        
+
         static public List<SCompare> GetFilter(List<SCompare> searchFields, Dictionary<string, SCompare> compareDict) {
             var result = new List<SCompare>();
             while (true) {
@@ -220,5 +221,55 @@ namespace JCore
             }
             return result;
         }
+
+        static public Dictionary<string, object> GetPreset(string table, Dictionary<string, object> session, Dictionary<string, List<string>> config) {
+            var result = new Dictionary<string, object>();
+            if (string.IsNullOrEmpty(table)) {
+                return result;
+            }
+
+            foreach (var item in config) {
+                // check key in sessions
+                object value = null;
+                if (!session.TryGetValue(item.Key, out value) || value == null) {
+                    continue;
+                }
+
+                // check table in tables
+                var tables = item.Value;
+                if (tables == null || tables.IndexOf(table) == -1) {
+                    continue;
+                }
+                result.Add(item.Key, value);
+            }
+            return result;
+        }
+
+        static public void MergeCollection(NameValueCollection collection, Dictionary<string, object> session) {
+            if(collection == null || session == null) {
+                return;
+            }
+
+            var keys = collection.AllKeys;
+            foreach (var item in session) {
+                if (keys.Contains(item.Key) && item.Value != null) {
+                    collection[item.Key] = item.Value.ToString();
+                }
+            }
+        }
+
+        public static List<string> GetKeys<TValue>(Dictionary<string, TValue> dict) { 
+            var list = new List<string>();
+            if(dict == null) {
+                return list;
+            }
+
+            foreach (var item in dict) {
+                list.Add(item.Key);
+            }
+            return list;
+        }
+
+
     }
 }

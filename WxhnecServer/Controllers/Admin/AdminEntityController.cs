@@ -21,6 +21,7 @@ namespace WxhnecServer
                 return error();
             }
 
+            setPredict(t);
             bool result = m_logic.SaveRow(collection);
 
             JObject jo = new JObject();
@@ -64,7 +65,7 @@ namespace WxhnecServer
             if (!m_logic.InitQuery(m_namespace, t)) {
                 return error();
             }
-
+            
             // listUI
             TListUI listUI = new TListUI();
             ViewBag.listDict = listUI.Class2UI(m_logic.FullName);
@@ -72,6 +73,7 @@ namespace WxhnecServer
 
             // page
             int pageSize = THelper.StringToInt(m_adminConfig["pageSize"]);
+            setPredict(t);
             var result = m_logic.Condition(c).GetList(p, pageSize, true);
             ViewBag.spage = m_logic.Paging;
             ViewBag.title = m_logic.GetTitle();
@@ -96,6 +98,11 @@ namespace WxhnecServer
                 ViewBag.Error = m_logic.Error;
                 return View("~/Views/Admin/Error.cshtml");
             }
+        }
+
+        void setPredict(string table) {
+            var session = this.FilterSession(THelper.GetKeys(G.Preset));
+            m_logic.PresetDict = THelper.GetPreset(table, session, G.Preset);
         }
 
     }

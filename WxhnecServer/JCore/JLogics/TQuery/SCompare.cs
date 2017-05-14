@@ -2,7 +2,7 @@
 {
     public struct SCompare
     {
-        public SCompare(string key, string value, string operate, string title = null) {
+        public SCompare(string key, object value, string operate, string title = null) {
             Key = key;
             Value = value;
             Operate = operate;
@@ -10,7 +10,7 @@
         }
 
         public string Key;
-        public string Value;
+        public object Value;
         public string Operate;
         public string Title;
     }
