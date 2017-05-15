@@ -1,52 +1,49 @@
 ﻿using JCore;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
 namespace WxhnecServer
 {
-    public class AdminEntityController : AdminController
+    public class AdminEntityController : AdminAuthController
     {
+        const string c_pageList = "/AdminEntity/List";
+        const string c_t = "t";
+        const string c_id = "id";
+
         TQueryLogic m_logic = new TQueryLogic();
         string m_namespace { get { return GetType().Namespace; } }
 
         [HttpPost]
         public string RowSave(FormCollection collection) {
-            string t = Request.QueryString["t"];
+            string t = Request.QueryString[c_t];
 
             if (!m_logic.InitQuery(m_namespace, t, true)) {
-                return error();
+                return toJson(m_logic.Error);
             }
 
             m_logic.PresetDict = getPreset(t, G.Preset);
             bool result = m_logic.SaveRow(collection);
 
-            JObject jo = new JObject();
             if (result) {
-                jo["msg"] = "success!";
+                m_jo[c_msg] = "success!";
 
-                var id = collection.Get("id");
+                var id = collection.Get(c_id);
                 if (string.IsNullOrEmpty(id)) {
-                    jo["url"] = "/AdminEntity/List?t=" + t;
+                    m_jo[c_url] = c_pageList + "?" + c_t + "=" + t;
                 }
             }
             else {
-                jo["msg"] = m_logic.Error;
+                m_jo[c_msg] = m_logic.Error;
             }
 
-            return JsonConvert.SerializeObject(jo);
+            return toJson();
         }
 
         [HttpGet]
         public ActionResult Row(int id = 0, string t = null) {
-            if (!checkLogin())
-                return m_login;
-
             if (!m_logic.InitQuery(m_namespace, t, true)) {
-                return error();
+                return error(m_logic.Error);
             }
 
             if (id == 0) {
@@ -65,11 +62,8 @@ namespace WxhnecServer
 
         [HttpGet]
         public ActionResult List(string t = null, string c = null, int p = 1) {
-            if (!checkLogin())
-                return m_login;
-
             if (!m_logic.InitQuery(m_namespace, t)) {
-                return error();
+                return error(m_logic.Error);
             }
             
             // listUI
@@ -92,18 +86,6 @@ namespace WxhnecServer
             }
 
             return View(result);
-        }
-
-        public dynamic error(bool isJson = false) {
-            if (isJson) {
-                JObject jo = new JObject();
-                jo["msg"] = m_logic.Error;
-                return JsonConvert.SerializeObject(jo);
-            }
-            else {
-                ViewBag.Error = m_logic.Error;
-                return View("~/Views/Admin/Error.cshtml");
-            }
         }
 
         Dictionary<string, object> getPreset(string table, Dictionary<string, List<string>> preset) {

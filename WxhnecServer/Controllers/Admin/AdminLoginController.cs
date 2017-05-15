@@ -1,12 +1,10 @@
 ﻿using JCore;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Configuration;
 using System.Web.Mvc;
 
 namespace WxhnecServer
 {
-    public class AdminLoginController : AdminController
+    public class AdminLoginController : AdminBaseController
     {
         public ActionResult Login() {
             ViewBag.bodyClass = "admin_login";
@@ -40,22 +38,20 @@ namespace WxhnecServer
         }
 
         public string LoginSave(FormCollection collection) {
-            JObject jo = new JObject();
-
             if (tryLogin(collection["uname"])) {
-                jo["msg"] = "login ok";
-                jo["url"] = "/Admin/AdminIndex";
+                m_jo[c_msg] = "login ok";
+                m_jo[c_url] = c_pageMain;
             }
             else {
-                jo["msg"] = "try again";
+                m_jo[c_msg] = "try again";
             }
 
-            return JsonConvert.SerializeObject(jo);
+            return toJson();
         }
 
         public RedirectResult LogOut() {
             Session.Clear();
-            return Redirect("/AdminLogin/Login");
+            return Redirect(c_pageLogin);
         }
     }
 }

@@ -1,53 +1,19 @@
 ﻿using JCore;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Configuration;
-using System.IO;
 using System.Web.Mvc;
 
 namespace WxhnecServer
 {
-    public class AdminController : Controller
+    public class AdminController : AdminAuthController
     {
         const string c_menuDir = "menuDir.json";
         const string c_menuTop = "menuTop.json";
-
-        protected ActionResult m_login = null;
-        protected dynamic m_adminConfig;
-
-        public AdminController() {
-            ViewBag.controller = this;
-            ViewBag.ui = G.Config["UI"]["ui"];
-
-            m_adminConfig = G.Config["AdminUI"];
-            ViewBag.resourceAdmin = m_adminConfig["resource"];
-        }
-
-        protected bool checkLogin() {
-            bool result = true;
-            while (true) {
-                if (!string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["debug"])) {
-                    break;
-                }
-
-                if (Session[G.super] == null) {
-                    m_login = Redirect("/AdminLogin/Login");
-                    result = false;
-                }
-
-                break;
-            }
-            return result;
-        }
 
         public ActionResult Info() {
             return View();
         }
 
-        public ActionResult AdminIndex() {
-            if (!checkLogin())
-                return m_login;
-            
+        public ActionResult Index() {
             return View();
         }
 
@@ -96,10 +62,7 @@ namespace WxhnecServer
         
         public string Refresh() {
             CacheExtension.RemoveAll();
-            JObject jo = new JObject();
-            jo["msg"] = "ok!";
-
-            return JsonConvert.SerializeObject(jo);
+            return toJson("ok!");
         }
 
     }
