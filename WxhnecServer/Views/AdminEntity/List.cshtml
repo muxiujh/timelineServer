@@ -15,7 +15,11 @@
             </h3>
         </div>
 
-        @{ Html.RenderPartial("List/filter"); }
+        @{
+            if(Session[G.companyid] == null) {
+                Html.RenderPartial("List/filter");
+            }
+        }
 
         <table class="table text-muted">
             <thead>

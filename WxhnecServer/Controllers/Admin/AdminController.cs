@@ -9,6 +9,9 @@ namespace WxhnecServer
 {
     public class AdminController : Controller
     {
+        const string c_menuDir = "menuDir.json";
+        const string c_menuTop = "menuTop.json";
+
         protected ActionResult m_login = null;
         protected dynamic m_adminConfig;
 
@@ -27,7 +30,7 @@ namespace WxhnecServer
                     break;
                 }
 
-                if (Session["adminLogin"] == null) {
+                if (Session[G.super] == null) {
                     m_login = Redirect("/AdminLogin/Login");
                     result = false;
                 }
@@ -49,14 +52,36 @@ namespace WxhnecServer
         }
 
         string getMenuDir() {
-            return Server.MapPath("~") + m_adminConfig["resource"] + "/";
+            string result = null;
+            while (true) {
+                var super = Session[G.super];
+                if (super == null) {
+                    break;
+                }
+
+                string menuDir = Server.MapPath("~") + m_adminConfig["resource"] + "/";
+                string menuDirFile = menuDir + c_menuDir;
+                JObject menuDirConfig = ConfigHelper.LoadConfig(menuDirFile) as JObject;
+                if(menuDirConfig == null) {
+                    break;
+                }
+
+                var dir = menuDirConfig[super.ToString()];
+                if(dir == null) {
+                    break;
+                }
+                
+                result = menuDir + dir.ToString() + "/";
+                break;
+            }
+            return result;
         }
 
         public ActionResult AdminTop(int id = 0) {
             ViewBag.bodyClass = "admin_top";
             ViewBag.key = id;
 
-            string menuConfig = getMenuDir() + m_adminConfig["menu"];
+            string menuConfig = getMenuDir() + c_menuTop;
             var menu = ConfigHelper.LoadConfigIncludeSubFirst(menuConfig, "left", "sub");            
             return View(menu);
         }

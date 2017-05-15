@@ -113,10 +113,10 @@ namespace JCore
             }
         }
 
-        static public int StringToInt(string value, int defaultValue = 0) {
+        static public int StringToInt(object value, int defaultValue = 0) {
             int result = defaultValue;
             while (true) {
-                if (string.IsNullOrWhiteSpace(value)) {
+                if (value == null) {
                     break;
                 }
                 try {

@@ -21,7 +21,7 @@ namespace WxhnecServer
                 return error();
             }
 
-            setPredict(t);
+            m_logic.PresetDict = getPreset(t, G.Preset);
             bool result = m_logic.SaveRow(collection);
 
             JObject jo = new JObject();
@@ -49,6 +49,12 @@ namespace WxhnecServer
                 return error();
             }
 
+            if (id == 0) {
+                var presetDict = getPreset(t, G.PresetId);
+                var first = presetDict.FirstOrDefault();
+                id = THelper.StringToInt(first.Value);
+            }
+
             object row = m_logic.GetRow(id);
 
             ViewBag.title = m_logic.GetTitle();
@@ -73,7 +79,7 @@ namespace WxhnecServer
 
             // page
             int pageSize = THelper.StringToInt(m_adminConfig["pageSize"]);
-            setPredict(t);
+            m_logic.PresetDict = getPreset(t, G.Preset);
             var result = m_logic.Condition(c).GetList(p, pageSize, true);
             ViewBag.spage = m_logic.Paging;
             ViewBag.title = m_logic.GetTitle();
@@ -100,9 +106,9 @@ namespace WxhnecServer
             }
         }
 
-        void setPredict(string table) {
-            var session = this.FilterSession(THelper.GetKeys(G.Preset));
-            m_logic.PresetDict = THelper.GetPreset(table, session, G.Preset);
+        Dictionary<string, object> getPreset(string table, Dictionary<string, List<string>> preset) {
+            var session = this.FilterSession(THelper.GetKeys(preset));
+            return THelper.GetPreset(table, session, preset);             
         }
 
     }
