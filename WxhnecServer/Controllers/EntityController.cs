@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace WxhnecServer
 {
-    public class EntityController : Controller
+    public class EntityController : BaseController
     {
         TQueryLogic m_logic = new TQueryLogic();
         string m_namespace { get { return GetType().Namespace; } }

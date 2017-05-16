@@ -26,7 +26,7 @@ namespace WxhnecServer
             bool result = m_logic.SaveRow(collection);
 
             if (result) {
-                m_jo[c_msg] = "success!";
+                m_jo[c_msg] = G.L["submit_ok"];
 
                 var id = collection.Get(c_id);
                 if (string.IsNullOrEmpty(id)) {

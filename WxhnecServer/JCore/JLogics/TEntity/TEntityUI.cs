@@ -56,6 +56,9 @@ namespace JCore
             }
             dict[TF.widget] = widget;
 
+            // title
+            dict[TF.title] = THelper.Lang(dict[TF.title] as string, pro.Name);
+
             // name
             dict[TF.name] = pro.Name;
 

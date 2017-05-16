@@ -43,7 +43,8 @@ namespace JCore
 
         public string GetTitle() {
             TEntity entity = TType.GetCustomAttribute<TEntity>();
-            return entity != null ? entity.Value : null;
+            string title = entity != null ? entity.Value : null;
+            return THelper.Lang(title, TType.Name);
         }
 
     }

@@ -79,9 +79,7 @@ namespace JCore
                 foreach (PropertyInfo pro in propertyList) {
                     if (PropertyHelper.HasAttribute<TListSearch>(pro)) {
                         var title = PropertyHelper.GetTFieldValue(pro, TF.title);
-                        if(string.IsNullOrEmpty(title)) {
-                            title = pro.Name;
-                        }
+                        title = THelper.Lang(title, pro.Name);
                         SCompare compare = new SCompare(pro.Name, null, null, title);
                         list.Add(compare);
                     }

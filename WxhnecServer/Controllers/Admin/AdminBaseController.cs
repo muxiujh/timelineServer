@@ -2,10 +2,11 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace WxhnecServer
 {
-    abstract public class AdminBaseController : Controller
+    abstract public class AdminBaseController : BaseController
     {
         public const string c_pageLogin = "/AdminLogin/Login";
         public const string c_pageMain = "/Admin/Index";
@@ -16,7 +17,9 @@ namespace WxhnecServer
         protected JObject m_jo = new JObject();
         protected dynamic m_adminConfig;
 
-        public AdminBaseController() {
+        protected override void Initialize(RequestContext requestContext) {
+            base.Initialize(requestContext);
+
             ViewBag.controller = this;
             ViewBag.ui = G.Config["UI"]["ui"];
 

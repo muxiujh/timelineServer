@@ -62,7 +62,7 @@ namespace WxhnecServer
         
         public string Refresh() {
             CacheExtension.RemoveAll();
-            return toJson("ok!");
+            return toJson(G.L["refresh_ok"]);
         }
 
     }

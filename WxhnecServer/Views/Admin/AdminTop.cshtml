@@ -7,9 +7,9 @@
 
 <div class="row ">
 
-    <div class="col-xs-2 top-left"> <h3> &nbsp; 管理中心</h3></div>
+    <div class="col-xs-2 top-left"> <h3> &nbsp; @G.L["admin_center"]</h3></div>
     <div class="col-xs-10 top-right">
-        <div class="pull-right"><div class="jh-height"></div>欢迎 登录 &nbsp; <a href="/AdminLogin/Logout" target="_top">退出</a></div>
+        <div class="pull-right"><div class="jh-height"></div>@G.L["admin_welcome"] @G.L["login"] &nbsp; <a href="/AdminLogin/Logout" target="_top">@G.L["admin_logout"]</a></div>
         <div class="jh-height-lg jh-div-md2"></div>
         <ul class="nav nav-tabs">
             @{ for (int i = 0; i < Model.Count; ++i) {
@@ -20,7 +20,7 @@
                 }
             }
             @if(Session[G.companyid] == null) {
-                <li class="pull-right admin_top_refresh"><button type="button" class="btn btn btn-default jh_button" jh_node="admin_refresh">刷新缓存</button></li>            
+                <li class="pull-right admin_top_refresh"><button type="button" class="btn btn btn-default jh_button" jh_node="admin_refresh">@G.L["admin_refresh_cache"]</button></li>            
             }
         </ul>
     </div>

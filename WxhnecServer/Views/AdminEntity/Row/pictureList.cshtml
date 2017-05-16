@@ -9,7 +9,7 @@
     <label class="col-xs-2 control-label">@Model[TF.title]</label>
     <div class="col-xs-5 uploadMany" jh_arg="picLimit=@Model[TF.dataSource]">
         <div class="upload_button">
-            <div text_loading="正在上传...">上传图片</div>
+            <div text_loading="@G.L["pic_uploading"]">@G.L["pic_upload"]</div>
             <input type="file" name="file" class="upload_button_file" multiple />
         </div>
 

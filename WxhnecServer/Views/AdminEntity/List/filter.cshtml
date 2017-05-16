@@ -1,5 +1,4 @@
 ﻿@using JCore;
-
 @{
     Layout = null;
 }
@@ -9,7 +8,7 @@
         <div class="panel-heading">
             <h4 class="panel-title">
                 <span style=" cursor pointer" data-toggle="collapse" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                    <button class="btn btn-sm btn-default">筛 选</button> &nbsp; &nbsp;  @ViewBag.filterString
+                    <button class="btn btn-sm btn-default">@G.L["filter"]</button> &nbsp; &nbsp;  @ViewBag.filterString
                 </span>
             </h4>
         </div>
@@ -34,7 +33,7 @@
                     <br />
                     <div class="form-group">
                         <div class="col-xs-offset-1 col-xs-5 ">
-                            <a class="btn btn-primary" jh_node="search_table">确 定</a>
+                            <a class="btn btn-primary" jh_node="search_table">@G.L["sure"]</a>
                         </div>
                     </div>
 

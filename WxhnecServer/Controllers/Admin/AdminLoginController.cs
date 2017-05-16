@@ -39,11 +39,11 @@ namespace WxhnecServer
 
         public string LoginSave(FormCollection collection) {
             if (tryLogin(collection["uname"])) {
-                m_jo[c_msg] = "login ok";
+                m_jo[c_msg] = G.L["login_ok"];
                 m_jo[c_url] = c_pageMain;
             }
             else {
-                m_jo[c_msg] = "try again";
+                m_jo[c_msg] = G.L["try_again"];
             }
 
             return toJson();

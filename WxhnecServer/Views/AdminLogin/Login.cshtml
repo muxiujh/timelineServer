@@ -1,4 +1,5 @@
-﻿@{
+﻿@using JCore;
+@{
     Layout = "~/Views/Admin/_AdminLayout.cshtml";
 }
 
@@ -14,7 +15,7 @@
             <!---------- form-group ---------->
             <div class="form-group">
                 <div class="col-xs-10 ">
-                    <h2>海宁市电子商务协会微信小程序管理中心</h2>
+                    <h2>@G.L["login_center"]</h2>
                     <br />
                 </div>
                 <span class='help-block'></span>
@@ -22,7 +23,7 @@
 
             <!---------- form-group ---------->
             <div class="form-group">
-                <label class="col-xs-2 control-label">口令</label>
+                <label class="col-xs-2 control-label">@G.L["login_password"]</label>
                 <div class="col-xs-4 ">
                     <input type="text" name="uname" class="form-control" autocomplete="off" />
                 </div>
@@ -33,7 +34,7 @@
             <!---------- form-group ---------->
             <div class="form-group">
                 <div class="col-xs-offset-2 col-xs-4 ">
-                    <button type="submit" class="btn btn-primary btn-lg jh_button">登 录</button>
+                    <button type="submit" class="btn btn-primary btn-lg jh_button">@G.L["login"]</button>
                 </div>
             </div>
 

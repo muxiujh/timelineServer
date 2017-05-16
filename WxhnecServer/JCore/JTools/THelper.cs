@@ -270,6 +270,21 @@ namespace JCore
             return list;
         }
 
+        static public string Lang(string title, string name = null) {
+            string result = null;
+            while (true) {
+                if (string.IsNullOrEmpty(title)) {
+                    if (string.IsNullOrEmpty(name)) {
+                        break;
+                    }
+                    title = name;
+                }
+
+                result = G.L[title];
+                break;
+            }
+            return result;
+        }
 
     }
 }
