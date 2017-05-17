@@ -133,6 +133,24 @@ namespace JCore
             return result;
         }
 
+        public bool ValidateField(string name, object value) {
+            bool result = true;
+            while (true) {
+                if (m_object == null) {
+                    break;
+                }
+
+                if (m_object.ValidateField(name, value)) {
+                    break;
+                }
+
+                Errors = m_object.Errors;
+                result = false;
+                break;
+            }
+            return result;
+        }
+
         public string GetTitle() {
             if (m_object == null) {
                 return null;

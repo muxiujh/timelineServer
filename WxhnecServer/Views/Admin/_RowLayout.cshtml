@@ -37,7 +37,7 @@
 
             <div class="panel-body">
                 <!-- form content -->
-                <form action="@ViewBag.UrlSave" style="" class="form-horizontal jh-div-xxl-sub" role="form" method="post" jh_node='form_send'>
+                <form action="@ViewBag.UrlSave" urlValidate="@ViewBag.UrlValidate" class="form-horizontal jh-div-xxl-sub" role="form" method="post" >
 
                     @RenderBody()
 
@@ -62,6 +62,7 @@
 
     $(function () {
         $(".uploadMany").jh_uploadMany();
+        $("[urlValidate]").jh_validateForm();
     });
 
     </script>
@@ -85,12 +86,12 @@
     <script type="text/javascript" src="@ViewBag.ui/jquery/jh_uploadMany.js"></script>
     <script type="text/javascript" src="@ViewBag.ui/jquery/jquery.lazyload.min.js"></script>
     <script type="text/javascript" src="@ViewBag.ui/jquery/superslide.2.1.js"></script>
+    <script type="text/javascript" src="@ViewBag.ui/jquery/jh_validateForm.js"></script>
 
     <!--
     <script type="text/javascript" src="@ViewBag.ui/jquery/jh.js?v=10"></script>
      -->
     <!--
-    <script type="text/javascript" src="@ViewBag.ui/jquery/jh_validate.js"></script>
     <script type="text/javascript" src="@ViewBag.ui/jquery/jh_upload.js"></script>
     <script type="text/javascript" src="@ViewBag.ui/jquery/jh_imgcut.js"></script>
     <script type="text/javascript" src="@ViewBag.ui/jquery/jh_waterfall.js"></script>

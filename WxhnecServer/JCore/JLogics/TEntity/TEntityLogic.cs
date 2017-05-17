@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Data.Entity.Infrastructure;
+using System.ComponentModel.DataAnnotations;
 
 namespace JCore
 {
@@ -159,6 +160,55 @@ namespace JCore
         public bool RemoveId(int id) {
             return Remove(FindRow(id));
         }
+
+        public bool ValidateField(string name, object value, Type type = null) {
+            bool result = true;
+            while (true) {
+                if (string.IsNullOrEmpty(name)) {
+                    break;
+                }
+
+                if (type == null) {
+                    type = TType;
+                }
+
+                PropertyInfo property = type.GetProperty(name);
+
+                // no property
+                if (property == null) {
+                    // level 1 search level 2
+                    if (type == TType) {
+                        foreach (var pro in type.GetProperties()) {
+                            if (PropertyHelper.IsVirtual(pro)) {
+                                if (PropertyHelper.HasElement(pro)) {
+                                    if (!ValidateField(name, value, pro.PropertyType)) {
+                                        result = false;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                }
+
+                // has property
+                var validates = property.GetCustomAttributes<TValidate>();
+                foreach (var validate in validates) {
+                    ValidationContext context = new ValidationContext(new Object());
+                    ValidationResult vResult = validate.GetValidationResult(value, context);
+                    if (vResult != null) {
+                        Errors[name] = vResult.ErrorMessage;
+                        result = false;
+                        break;
+                    }
+                }
+
+                break;
+            }
+            return result;
+        }
+
     }
     
 }

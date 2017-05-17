@@ -1,4 +1,5 @@
 ﻿using JCore;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -10,9 +11,26 @@ namespace WxhnecServer
         const string c_pageList = "/AdminEntity/List";
         const string c_t = "t";
         const string c_id = "id";
+        const string c_success = "success";
 
         TQueryLogic m_logic = new TQueryLogic();
         string m_namespace { get { return GetType().Namespace; } }
+
+        [HttpGet]
+        public string ValidateField(string name, string value, string t = null) {
+            if (!m_logic.InitQuery(m_namespace, t, true)) {
+                return toJson(m_logic.Error);
+            }
+
+            if(m_logic.ValidateField(name, value)) {
+                m_jo[c_success] = true;
+            }
+            else {
+                return JsonConvert.SerializeObject(m_logic.Errors);
+            }
+
+            return toJson();
+        }
 
         [HttpPost]
         public string RowSave(FormCollection collection) {
@@ -27,6 +45,7 @@ namespace WxhnecServer
 
             if (result) {
                 m_jo[c_msg] = G.L["submit_ok"];
+                m_jo[c_success] = true;
 
                 var id = collection.Get(c_id);
                 if (string.IsNullOrEmpty(id)) {
@@ -34,7 +53,7 @@ namespace WxhnecServer
                 }
             }
             else {
-                m_jo[c_msg] = m_logic.Error;
+                return JsonConvert.SerializeObject(m_logic.Errors);
             }
 
             return toJson();
@@ -54,8 +73,9 @@ namespace WxhnecServer
 
             object row = m_logic.GetRow(id);
 
-            ViewBag.title = m_logic.GetTitle();
-            ViewBag.UrlSave = Request.RawUrl.Replace("Row", "RowSave");
+            ViewBag.title = m_logic.GetTitle(); 
+            ViewBag.UrlSave = Request.RawUrl.Replace(nameof(Row), nameof(RowSave));
+            ViewBag.UrlValidate = Request.RawUrl.Replace(nameof(Row), nameof(ValidateField));
 
             return View(row);
         }
