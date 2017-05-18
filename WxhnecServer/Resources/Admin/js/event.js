@@ -146,10 +146,13 @@ $.jh_add_events({
         }
     },
     img_verify : {
-        click : function (_this) {           
-            var img = _this.find('img');
-            var url = '?c=agent&rc=misc&ra=verify'+'&t='+rand();
-            img.attr('src', url);
+        load: function (_this) {
+            var img = _this.find("img");
+            var url = img.attr("src");
+            _this.click(function () {
+                var urlNew = url + '?t=' + rand();
+                img.attr('src', urlNew);
+            })
         }
     }
 });

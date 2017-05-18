@@ -24,8 +24,20 @@
             <!---------- form-group ---------->
             <div class="form-group">
                 <label class="col-xs-2 control-label">@G.L["login_password"]</label>
-                <div class="col-xs-4 ">
+                <div class="col-xs-3 ">
                     <input type="text" name="uname" class="form-control" autocomplete="off" />
+                </div>
+                <span class='help-block'></span>
+            </div>
+
+            <!---------- form-group ---------->
+            <div class="form-group">
+                <label class="col-xs-2 control-label">@G.L["login_code"]</label>
+                <div class="col-xs-1 img-code" jh_node="img_verify">
+                    <img src="/AdminLogin/Image" /> 
+                </div>
+                <div class="col-xs-2 ">
+                    <input type="text" name="code" class="form-control" autocomplete="off" />
                 </div>
                 <span class='help-block'></span>
             </div>

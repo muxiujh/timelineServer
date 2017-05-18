@@ -1,11 +1,53 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 
 namespace JCore
 {
     public class PsHelper
     {
+        static public void Text2Image(Stream stream, string text, int size = 12) {
+            if (string.IsNullOrEmpty(text) || stream == null) {
+                return;
+            }
+
+            Bitmap image = null;
+            Graphics graphics = null;
+            try {
+                // graphics
+                var textWidth = text.Length * size;
+                var width = (int)(textWidth * 1.2);
+                var height = (int)(size * 2.5);
+                image = new Bitmap(width, height);
+                graphics = Graphics.FromImage(image);
+
+                // background
+                Color colorBg = Color.FromArgb(196, 185, 163);
+                graphics.Clear(colorBg);
+
+                // text
+                Font font = new Font("Arial", size, FontStyle.Regular);
+                Color color = Color.White;
+                Brush brush = new SolidBrush(color);
+                var left = (width - textWidth) / 2;
+                var top = (float)((height - size * 1.6) / 2);
+                graphics.DrawString(text, font, brush, left, top);
+
+                // save
+                image.Save(stream, ImageFormat.Jpeg);
+            }
+            finally {
+                if (graphics != null) {
+                    graphics.Dispose();
+                }
+
+                if (image != null) {
+                    image.Dispose();
+                }
+            }
+        }
+
         static public ImageFormat GetImageFormat(string path) {
             if (!FileHelper.CheckFile(path)) {
                 return null;
