@@ -1,25 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
 using JCore;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using System.Web.Routing;
 
 namespace WxhnecServer
 {
-    public class UploadController : Controller
+    public class UploadController : BaseController
     {
-        UploadLogic m_upload = new UploadLogic();
+        UploadLogic m_upload;
 
-        void initConfig() {
-            m_upload.SetServerDir(Server.MapPath("~"));
-        }
+        protected override void Initialize(RequestContext requestContext) {
+            base.Initialize(requestContext);
+            m_upload = new UploadLogic(m_serverDir);
+        }        
 
         [HttpPost]
         public string Index() {
-            initConfig();
             HttpPostedFileBase httpFile = Request.Files[0];
             string index = Request.Params["index"];
 
@@ -41,13 +39,11 @@ namespace WxhnecServer
 
         [HttpGet]
         public ActionResult Upload() {
-            initConfig();
             return View();
         }
 
         [HttpGet]
         public ActionResult Show() {
-            initConfig();
             var collection = Request.Params;
 
             var result = m_upload.Show(collection.Get("pic"), collection.Get("size"));

@@ -6,10 +6,13 @@ namespace WxhnecServer
 {
     abstract public class BaseController : Controller
     {
+        protected string m_serverDir;
         protected override void Initialize(RequestContext requestContext) {
             base.Initialize(requestContext);
-            if(G.L == null || !G.L.Success) {
-                string langFile = Server.MapPath("~") + "Resources/lang/cn.json";
+            m_serverDir = Server.MapPath("~");
+
+            if (G.L == null || !G.L.Success) {
+                string langFile = m_serverDir + "Resources/lang/cn.json";
                 G.L = new JLang(langFile);
             }
         }

@@ -1,0 +1,33 @@
+﻿@using JCore;
+@{
+    Layout = "~/Views/Admin/_AdminLayout.cshtml";
+}
+
+<!-- panel -->
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">@G.L["qrcode"]</h3>
+    </div>
+    <div class="panel-body">
+
+        <form class="form-horizontal jh-div-xxl-sub" role="form" method="post">
+
+            <!---------- form-group ---------->
+            <div class="form-group">
+                <label class="col-xs-2 control-label"></label>
+                <div class="col-xs-5 ">
+                    <img src="/Company/GetQrcode?id=@Session[G.companyid]" />
+                </div>
+                <!-- line description -->
+                <div class="col-xs-offset-2 col-xs-10">
+                    <div class="jh-div-md text-muted">@G.L["qrcode_desc"]</div>
+                </div>
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+</div>

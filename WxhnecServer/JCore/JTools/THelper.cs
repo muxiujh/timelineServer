@@ -286,5 +286,21 @@ namespace JCore
             return result;
         }
 
+        public static string Dict2QueryString<TValue>(Dictionary<string, TValue> dict, string comma = "") {
+            var result = "";
+            while (true) {
+                if (dict == null) {
+                    break;
+                }
+
+                foreach (var item in dict) {
+                    result += comma + item.Key + "=" + item.Value;
+                    comma = "&";
+                }
+                break;
+            }
+            return result;
+        }
+
     }
 }

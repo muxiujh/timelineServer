@@ -12,7 +12,7 @@ namespace JCore
         SUploadConfig m_config;
         public string Error { get; set; }
 
-        public UploadLogic() {
+        public UploadLogic(string serverDir) {
             var uploadConfig = G.Config["UPLOAD"];
             m_config = new SUploadConfig();
             var maxSize = THelper.StringToInt(uploadConfig["maxSize"]);
@@ -25,14 +25,10 @@ namespace JCore
                 ImageFormat.Png,
                 ImageFormat.Jpeg
             };
-            m_config.Dir = uploadConfig["dir"] + "/";
+            m_config.Dir = serverDir + uploadConfig["dir"] + "/";
 
             var ossConfig = G.Config["AliOss"];
-            m_config.OssUrl = "http://" + ossConfig["bucket"] + "." + ossConfig["server"] + "/";
-        }
-
-        public void SetServerDir(string serverDir) {
-            m_config.Dir = serverDir + m_config.Dir;
+            m_config.OssUrl = string.Format(ossConfig["url"], ossConfig["bucket"], ossConfig["server"]);
         }
 
         public string Upload(HttpPostedFileBase httpFile) {

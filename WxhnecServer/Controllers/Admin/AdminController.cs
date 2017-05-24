@@ -65,5 +65,9 @@ namespace WxhnecServer
             return toJson(G.L["refresh_ok"]);
         }
 
+        public ActionResult Qrcode() {
+            return View();
+        }
+
     }
 }
