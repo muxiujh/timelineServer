@@ -1,18 +1,17 @@
 ﻿using JCore;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace WxhnecServer
 {
-    public class AdminEntityController : AdminAuthController
+    public abstract class AdminEntityController : AdminAuthController
     {
-        const string c_pageList = "/AdminEntity/List";
-        const string c_t = "t";
-        const string c_id = "id";
-        const string c_success = "success";
+        protected const string c_t = "t";
+        protected const string c_id = "id";
+        protected const string c_success = "success";
 
+        protected string m_pageList;
         TQueryLogic m_logic = new TQueryLogic();
         string m_namespace { get { return GetType().Namespace; } }
 
@@ -40,7 +39,7 @@ namespace WxhnecServer
                 return toJson(m_logic.Error);
             }
 
-            m_logic.PresetDict = getPreset(t, G.Preset);
+            m_logic.PresetDict = getPreset(t);
             bool result = m_logic.SaveRow(collection);
 
             if (result) {
@@ -49,7 +48,7 @@ namespace WxhnecServer
 
                 var id = collection.Get(c_id);
                 if (string.IsNullOrEmpty(id)) {
-                    m_jo[c_url] = c_pageList + "?" + c_t + "=" + t;
+                    m_jo[c_url] = m_pageList + "?" + c_t + "=" + t;
                 }
             }
             else {
@@ -66,9 +65,13 @@ namespace WxhnecServer
             }
 
             if (id == 0) {
-                var presetDict = getPreset(t, G.PresetId);
-                var first = presetDict.FirstOrDefault();
-                id = THelper.StringToInt(first.Value);
+                var presetDict = getPreset(t);
+                if (presetDict != null) {
+                    object _id = null;
+                    if(presetDict.TryGetValue(c_id, out _id)) {
+                        id = THelper.StringToInt(_id);
+                    }
+                }
             }
 
             object row = m_logic.GetRow(id);
@@ -93,7 +96,7 @@ namespace WxhnecServer
 
             // page
             int pageSize = THelper.StringToInt(m_adminConfig["pageSize"]);
-            m_logic.PresetDict = getPreset(t, G.Preset);
+            m_logic.PresetDict = getPreset(t);
             var result = m_logic.Condition(c).GetList(p, pageSize, true);
             ViewBag.spage = m_logic.Paging;
             ViewBag.title = m_logic.GetTitle();
@@ -108,9 +111,8 @@ namespace WxhnecServer
             return View(result);
         }
 
-        Dictionary<string, object> getPreset(string table, Dictionary<string, List<string>> preset) {
-            var session = this.FilterSession(THelper.GetKeys(preset));
-            return THelper.GetPreset(table, session, preset);             
+        protected virtual Dictionary<string, object> getPreset(string table) {
+            return null;
         }
 
     }

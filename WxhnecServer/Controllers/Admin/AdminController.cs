@@ -6,7 +6,6 @@ namespace WxhnecServer
 {
     public class AdminController : AdminAuthController
     {
-        const string c_menuDir = "menuDir.json";
         const string c_menuTop = "menuTop.json";
 
         public ActionResult Info() {
@@ -25,19 +24,7 @@ namespace WxhnecServer
                     break;
                 }
 
-                string menuDir = Server.MapPath("~") + m_adminConfig["resource"] + "/";
-                string menuDirFile = menuDir + c_menuDir;
-                JObject menuDirConfig = ConfigHelper.LoadConfig(menuDirFile) as JObject;
-                if(menuDirConfig == null) {
-                    break;
-                }
-
-                var dir = menuDirConfig[super.ToString()];
-                if(dir == null) {
-                    break;
-                }
-                
-                result = menuDir + dir.ToString() + "/";
+                result = string.Format("{0}{1}/menu/{2}/", m_serverDir, m_adminConfig["resource"], super);
                 break;
             }
             return result;

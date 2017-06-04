@@ -7,12 +7,6 @@ namespace JCore
     public static class G
     {
         static G() {
-            PresetId = new TDict();
-            PresetId.Add(companyid, new List<string>() { nameof(pre_company) });
-
-            Preset = new TDict();
-            Preset.Add(companyid, new List<string>() { nameof(pre_product), nameof(pre_news) });
-
             string path = "D:/Project/ASP.NET/timelineServer/WxhnecServer/Resources/lang/cn.json";
             L = new JLang(path);
         }
@@ -29,8 +23,6 @@ namespace JCore
         public const string companyid = "companyid";
         public const string super = "super";
 
-        public static TDict Preset;
-        public static TDict PresetId;
         public static JLang L;
     }
 }

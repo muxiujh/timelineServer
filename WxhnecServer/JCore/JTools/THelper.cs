@@ -222,29 +222,6 @@ namespace JCore
             return result;
         }
 
-        static public Dictionary<string, object> GetPreset(string table, Dictionary<string, object> session, Dictionary<string, List<string>> config) {
-            var result = new Dictionary<string, object>();
-            if (string.IsNullOrEmpty(table)) {
-                return result;
-            }
-
-            foreach (var item in config) {
-                // check key in sessions
-                object value = null;
-                if (!session.TryGetValue(item.Key, out value) || value == null) {
-                    continue;
-                }
-
-                // check table in tables
-                var tables = item.Value;
-                if (tables == null || tables.IndexOf(table) == -1) {
-                    continue;
-                }
-                result.Add(item.Key, value);
-            }
-            return result;
-        }
-
         static public void MergeCollection(NameValueCollection collection, Dictionary<string, object> session) {
             if(collection == null || session == null) {
                 return;
