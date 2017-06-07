@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace JCore
@@ -68,24 +70,46 @@ namespace JCore
                 }
 
                 string dir = Path.GetDirectoryName(path);
-                if (result is JObject) {
-                    var iterator = (result as JObject).GetEnumerator();
-                    while (iterator.MoveNext()) {
-                        loadSubFirst(iterator.Current.Value, dir, sub, key);
-                    }
-                }
-                else if (result is JArray) {
-                    var iterator = (result as JArray).GetEnumerator();
-                    while (iterator.MoveNext()) {
-                        loadSubFirst(iterator.Current, dir, sub, key);
-                    }
-                }
+                JForeach(result, node => {
+                    loadSubFirst(node, dir, sub, key);
+                });
 
                 break;
             }
 
             return result;
         }
+
+        static public List<string> GetList(object obj, string key) {
+            var result = new List<string>();
+            JForeach(obj, node => {
+                var item = node[key];
+                if (item != null) {
+                    result.Add(item.ToString());
+                }
+            });
+            return result;
+        }
+
+        static void JForeach(object obj, Action<JToken> act) {
+            if(obj == null || act == null) {
+                return;
+            }
+
+            if (obj is JObject) {
+                var iterator = (obj as JObject).GetEnumerator();
+                while (iterator.MoveNext()) {
+                    act(iterator.Current.Value);
+                }
+            }
+            else if (obj is JArray) {
+                var iterator = (obj as JArray).GetEnumerator();
+                while (iterator.MoveNext()) {
+                    act(iterator.Current);
+                }
+            }
+        }
+
 
     }
 }

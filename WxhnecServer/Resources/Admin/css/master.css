@@ -63,3 +63,6 @@ ul.main-nav > li:first-child { width: 80px; }
 
 .img-code {line-height:33px;}
 .img-code img {border-radius:5px;}
+
+/*error*/
+.pre-error { background-color:inherit; border:0; font-size:inherit;}

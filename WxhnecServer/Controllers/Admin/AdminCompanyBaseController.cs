@@ -1,14 +1,14 @@
 ﻿using JCore;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Web.Routing;
 
 namespace WxhnecServer
 {
     [AdminCompanyFilter]
-    public class AdminEntityCompanyController : AdminEntityController
+    public abstract class AdminCompanyBaseController : AdminEntityController
     {
-        int m_companyid;
+        protected const int c_levelDefault = 1;
+        protected int m_companyid;
 
         protected override void Initialize(RequestContext requestContext) {
             base.Initialize(requestContext);
@@ -23,19 +23,7 @@ namespace WxhnecServer
                 m_companyid = THelper.StringToInt(companyidConfig);
                 break;
             }
-            m_pageList = "/AdminEntityCompany/List";
-        }
-
-        protected override Dictionary<string, object> getPreset(string table) {
-            var dict = new Dictionary<string, object>();
-
-            if (table == nameof(pre_company)) {
-                dict[c_id] = m_companyid;
-            }
-            else {
-                dict[G.companyid] = m_companyid;
-            }
-            return dict;
+            m_pageList = "/AdminCompany/List";
         }
     }
 }

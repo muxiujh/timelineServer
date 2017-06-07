@@ -279,5 +279,18 @@ namespace JCore
             return result;
         }
 
+        public static string UpFirst(string content) {
+            var result = "";
+            while (true) {
+                if (string.IsNullOrEmpty(content)) {
+                    break;
+                }
+
+                result = content.Substring(0, 1).ToUpper() + content.Substring(1);
+                break;
+            }
+            return result;
+        }
+
     }
 }

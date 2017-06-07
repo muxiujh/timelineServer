@@ -31,7 +31,11 @@ namespace WxhnecServer
             if (msg != null) {
                 m_jo[c_msg] = msg;
             }
-            return JsonConvert.SerializeObject(m_jo);
+            return toJsonRaw(m_jo);
+        }
+
+        protected string toJsonRaw(object obj) {
+            return JsonConvert.SerializeObject(obj);
         }
 
         protected ActionResult error(string msg = null) {

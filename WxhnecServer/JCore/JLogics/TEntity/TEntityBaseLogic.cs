@@ -35,10 +35,28 @@ namespace JCore
 
         public T FindRow(int id, string reference = null) {
             T row = m_dbset.Find(id);
-            if (row != null &&　reference != null) {
+            if (row != null && reference != null) {
                 m_db.Entry(row).Reference(reference).Load();
             }
             return row;
+        }
+
+        public bool DetachRow(object row) {
+            var result = false;
+            while (true) {
+                if (row == null) {
+                    break; ;
+                }
+
+                if (THelper.GetBaseType(row) != TType) {
+                    break;
+                }
+
+                m_db.Entry(row).State = EntityState.Detached;
+                result = true;
+                break;
+            }
+            return result;
         }
 
         public string GetTitle() {

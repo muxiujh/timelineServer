@@ -10,12 +10,13 @@ namespace JCore
         string m_t;
         dynamic m_object;
 
-        public string FullName { get; set; }
-        public SPage Paging { get; set; }
-        public string Error { get; set; }
-        public Dictionary<string, string> Errors { get; set; }
-        public Dictionary<string, SCompare> CompareDict { get; set; }
-        public Dictionary<string, object> PresetDict { get; set; }
+        public string FullName;
+        public SPage Paging;
+        public string Error;
+        public Dictionary<string, string> Errors;
+        public Dictionary<string, SCompare> CompareDict;
+        public Dictionary<string, object> PresetDict;
+        public object Row;
 
         public bool InitQuery(string nameSpace, string t, bool isRow = false) {
             bool result = false;
@@ -86,24 +87,39 @@ namespace JCore
             return result;
         }
 
-        public object GetRow(int id = 0) {
-            if (m_object == null) {
-                return null;
-            }
+        public bool CheckRow(int id = 0, bool isDetail = false) {
+            while (true) {
+                Row = null;
+                if (m_object == null) {
+                    break;
+                }
 
-            object row = null;
-            if (id > 0) {
+                if (id <= 0) {
+                    break;
+                }
+
+                if (!isDetail) {
+                    Row = m_object.FindRow(id);
+                    break;
+                }
+
                 string detail = m_t + "_detail";
                 if (m_object.TType.GetProperty(detail) == null) {
                     detail = null;
                 }
-                row = m_object.FindRow(id, detail);
+                Row = m_object.FindRow(id, detail);
+                break;
             }
-            else {
-                row = Activator.CreateInstance(m_object.TType);
+            return Row != null;
+        }
+
+        public bool CreateRow() {
+            if (m_object == null) {
+                return false;
             }
 
-            return row;
+            Row = Activator.CreateInstance(m_object.TType);
+            return Row != null;
         }
 
         public bool SaveRow(NameValueCollection collection) {
@@ -121,6 +137,7 @@ namespace JCore
                 result = m_object.Add(row) != null;
             }
             else {
+                m_object.DetachRow(Row);
                 result = m_object.Modify(row);
             }
 

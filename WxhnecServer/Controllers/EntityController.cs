@@ -29,11 +29,13 @@ namespace WxhnecServer
                 return error();
             }
 
-            object row = m_logic.GetRow(id);
+            if(!m_logic.CheckRow(id, true)) {
+                return error();
+            }
 
             TEntityUI m_entityUI = new TEntityUI();
             var result = new Dictionary<string, object>();
-            m_entityUI.Row2UI(row, dict => {
+            m_entityUI.Row2UI(m_logic.Row, dict => {
                 if (dict != null) {
                     result.Add(dict[TF.name].ToString(),dict[TF.value]);
                 }
