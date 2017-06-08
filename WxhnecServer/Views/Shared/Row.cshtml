@@ -5,10 +5,8 @@
 @using JCore;
 @model Object
 @{
-    TEntityUI entityUI = new TEntityUI();
+    TEntityUI entityUI = new TEntityUI((TS)Session[G.super]);
     entityUI.Row2UI(Model, dict => {
-        if (dict != null) {
-            Html.RenderPartial("Row/" + dict[TF.widget].ToString(), dict);
-        }
+        Html.RenderPartial("Row/" + dict[TF.widget].ToString(), dict);
     });
 }

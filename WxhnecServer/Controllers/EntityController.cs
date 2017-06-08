@@ -36,9 +36,7 @@ namespace WxhnecServer
             TEntityUI m_entityUI = new TEntityUI();
             var result = new Dictionary<string, object>();
             m_entityUI.Row2UI(m_logic.Row, dict => {
-                if (dict != null) {
-                    result.Add(dict[TF.name].ToString(),dict[TF.value]);
-                }
+                result.Add(dict[TF.name].ToString(), dict[TF.value]);
             });
 
             return toJson(result);

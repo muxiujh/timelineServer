@@ -34,7 +34,7 @@ namespace WxhnecServer
 
                 if (string.IsNullOrEmpty(code)) {
                     if (ConfigurationManager.AppSettings[c_uname] == password) {
-                        Session[G.super] = AdminEnum.super;
+                        Session[G.super] = TS.s1;
                         result = 1;
                     }
                     break;
@@ -54,7 +54,7 @@ namespace WxhnecServer
                 var row = model.GetCompany(password);
                 if (row != null) {
                     Session[G.companyid] = row.id.Value;
-                    Session[G.super] = AdminEnum.company;
+                    Session[G.super] = TS.s2;
                     Session.Remove(c_try);
                     result = 1;
                 }

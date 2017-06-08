@@ -196,7 +196,7 @@ namespace WxhnecServer
                     break;
                 }
 
-                if (!m_logic.InitQuery(GetType().Namespace, m_table, isRow)) {
+                if (!m_logic.InitQuery(GetType().Namespace, m_table, isRow, (TS)Session[G.super])) {
                     m_error = m_logic.Error;
                     break;
                 }

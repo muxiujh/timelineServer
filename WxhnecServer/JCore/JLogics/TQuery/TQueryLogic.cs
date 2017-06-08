@@ -17,8 +17,9 @@ namespace JCore
         public Dictionary<string, SCompare> CompareDict;
         public Dictionary<string, object> PresetDict;
         public object Row;
+        public TS m_super;
 
-        public bool InitQuery(string nameSpace, string t, bool isRow = false) {
+        public bool InitQuery(string nameSpace, string t, bool isRow = false, TS super = TS.s1) {
             bool result = false;
             while (true) {
                 if (string.IsNullOrWhiteSpace(nameSpace)) {
@@ -40,6 +41,7 @@ namespace JCore
                 }
                 
                 m_object = isRow ? getTEntity() : getTList();
+                m_super = super;
                 result = m_object != null;
                 break;
             }
@@ -127,7 +129,7 @@ namespace JCore
                 return false;
             }
 
-            TEntityUI entityUI = new TEntityUI();
+            TEntityUI entityUI = new TEntityUI(m_super);
 
             THelper.MergeCollection(collection, PresetDict);
             var row = entityUI.UI2Row(collection, m_object.TType);

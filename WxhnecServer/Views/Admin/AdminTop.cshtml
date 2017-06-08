@@ -19,7 +19,7 @@
                 <li class="@selected"><a href="javascript:void(0)" data-toggle="tab" jh_node="admin_nav" jh_arg="a=@subItem["action"]&t=@subItem["template"]&left=@item["left"]" >@item["title"]</a></li>
                 }
             }
-            @if(AdminEnum.super.Equals(Session[G.super])) {
+            @if (TS.s1.Equals(Session[G.super])) {
                 <li class="pull-right admin_top_refresh"><button type="button" class="btn btn btn-default jh_button" jh_node="admin_refresh">@G.L["admin_refresh_cache"]</button></li>            
             }
         </ul>

@@ -9,7 +9,7 @@ namespace WxhnecServer
         public void OnAuthorization(AuthorizationContext filterContext) {
             while (true) {
                 var super = HttpContext.Current.Session[G.super];
-                if (super != null && AdminEnum.super.Equals(super)) {
+                if (super != null && TS.s1.Equals(super)) {
                     break;
                 }
 

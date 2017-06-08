@@ -10,6 +10,11 @@ namespace JCore
 
     public class TEntityUI
     {
+        TS m_super;
+
+        public TEntityUI(TS super = TS.s1) {
+            m_super = super;
+        }
 
         protected TFDictionary field2UI(PropertyInfo pro, object value) {
             if (PropertyHelper.IsVirtual(pro)) {
@@ -26,6 +31,12 @@ namespace JCore
 
             // begin fill dictionary
             PropertyHelper.FillTFDictionary(ref dict);
+
+            // tsuper
+            var super = dict[TF.super];
+            if (super != null && m_super > (TS)super) {
+                return null;
+            }
 
             // element
             TElement element = pro.GetCustomAttribute<TElement>();
@@ -89,7 +100,9 @@ namespace JCore
                     var value = pro.GetValue(row);
                     var dict = field2UI(pro, value);
                     // action
-                    act(dict);
+                    if(dict != null) {
+                        act(dict);
+                    }
                 }
             }
 
@@ -115,6 +128,12 @@ namespace JCore
                     }
                 }
                 else if (collection.AllKeys.Contains(pro.Name)) {
+                    // tsuper
+                    var super = PropertyHelper.GetTFieldValueRaw(pro, TF.super);
+                    if (super != null && m_super > (TS)super) {
+                        continue;
+                    }
+
                     object val = collection[pro.Name];
 
                     // refer

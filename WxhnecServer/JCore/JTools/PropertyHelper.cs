@@ -79,6 +79,20 @@ namespace JCore
         static public string GetTFieldValue(PropertyInfo pro, TF key) {
             string result = null;
             while (true) {
+                var value = GetTFieldValueRaw(pro, key);
+                if (value == null) {
+                    break;
+                }
+
+                result = value.ToString();
+                break;
+            }
+            return result;
+        }
+
+        static public object GetTFieldValueRaw(PropertyInfo pro, TF key) {
+            object result = null;
+            while (true) {
                 var fieldList = pro.GetCustomAttributes<TField>();
                 if (fieldList == null) {
                     break;
@@ -86,10 +100,10 @@ namespace JCore
 
                 foreach (TField field in fieldList) {
                     if (field.Key == key) {
-                        result = field.Value.ToString();
+                        result = field.Value;
                         break;
                     }
-                }                
+                }
 
                 break;
             }

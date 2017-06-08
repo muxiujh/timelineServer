@@ -15,7 +15,7 @@ namespace WxhnecServer
 
                 var superConfig = ConfigurationManager.AppSettings[G.super];
                 if (!string.IsNullOrEmpty(superConfig)) {
-                    HttpContext.Current.Session[G.super] = AdminEnum.super;
+                    HttpContext.Current.Session[G.super] = TS.s1;
                     break;
                 }
 

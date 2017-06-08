@@ -17,6 +17,7 @@
         widget,
         refer,
         parse,
+        super,
         listElement
     }
 	
