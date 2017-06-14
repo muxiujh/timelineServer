@@ -18,11 +18,19 @@ namespace WxhnecServer
 
         [HttpPost]
         public string Index() {
+            int companyid;
+            if (TS.s1.Equals(Session[G.super])) {
+                companyid = 1;
+            }
+            else {
+                companyid = THelper.StringToInt(Session[G.companyid]);
+            }
+
             HttpPostedFileBase httpFile = Request.Files[0];
             string index = Request.Params["index"];
 
             var jo = new JObject();
-            var path = m_upload.Upload(httpFile);
+            var path = m_upload.Upload(httpFile, companyid);
             if(path != null) {
                 jo["index"] = index;
                 jo["success"] = true;

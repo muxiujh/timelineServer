@@ -9,11 +9,12 @@ namespace JCore
     {
         public new T Row { get; set; }
 
-        public bool AddPic(string md5, string path) {
+        public bool AddPic(string md5, string path, int companyid) {
             Row = new T();
             Row.md5 = md5;
             Row.path = path;
             Row.ctime = DateTime.Now;
+            Row.companyid = companyid;
 
             Row = Add(Row);
             return Row != null;

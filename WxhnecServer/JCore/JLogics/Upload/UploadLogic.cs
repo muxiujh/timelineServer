@@ -11,6 +11,7 @@ namespace JCore
     {
         SUploadConfig m_config;
         public string Error { get; set; }
+        int m_companyid;
 
         public UploadLogic(string serverDir) {
             var uploadConfig = G.Config["UPLOAD"];
@@ -31,7 +32,13 @@ namespace JCore
             m_config.OssUrl = string.Format(ossConfig["url"], ossConfig["bucket"], ossConfig["server"]);
         }
 
-        public string Upload(HttpPostedFileBase httpFile) {
+        public string Upload(HttpPostedFileBase httpFile, int companyid = 0) {
+            if(companyid <= 0) {
+                Error = G.L["upload_companyid"];
+                return null;
+            }
+            m_companyid = companyid;
+
             string tempFile = http2Temp(httpFile);
             return temp2Local(tempFile);
         }
@@ -41,7 +48,7 @@ namespace JCore
             string sizePath = null;
             while (true) {
                 if (string.IsNullOrWhiteSpace(shortPath)) {
-                    Error = SUploadError.ShortPath;
+                    Error = G.L["upload_ShortPath"];
                     break;
                 }
 
@@ -60,18 +67,18 @@ namespace JCore
                 sizePath = m_config.Dir + sizeShortPath;
 
                 if (!PsHelper.Thumb(path, sizePath, size, size)) {
-                    Error = SUploadError.Thumb;
+                    Error = G.L["upload_NoLargeFile"];
                     break;
                 }
 
                 AliOssLogic aliOss = new AliOssLogic();
                 if (!aliOss.Add(sizeShortPath, sizePath)) {
-                    Error = SUploadError.OssAdd;
+                    Error = G.L["upload_OssAdd"];
                     break;
                 }
 
                 if (!FileHelper.CreateFile(sizePathTrue)) {
-                    Error = SUploadError.CreateTrue;
+                    Error = G.L["upload_CreateTrue"];
                     break;
                 }
 
@@ -87,19 +94,19 @@ namespace JCore
             string result = null;
             while (true) {
                 if(httpFile == null) {
-                    Error = SUploadError.NoHttpFile;
+                    Error = G.L["upload_NoHttpFile"];
                     break;
                 }
 
                 // check ContentLength
                 if (httpFile.ContentLength > m_config.ContentLength) {
-                    Error = SUploadError.ContentLength;
+                    Error = G.L["upload_ContentLength"];
                     break;
                 }
 
                 // check ContentType
                 if (!m_config.ContentTypeList.Contains(httpFile.ContentType)) {
-                    Error = SUploadError.ContentType;
+                    Error = G.L["upload_ContentType"];
                     break;
                 }
 
@@ -109,7 +116,7 @@ namespace JCore
                 // dir, path
                 string dir = m_config.Dir + FileHelper.GetDateDir();
                 if (!FileHelper.CheckDir(dir)) {
-                    Error = SUploadError.Dir;
+                    Error = G.L["upload_Dir"];
                     break;
                 }
                 string path = dir + name + httpFile.FileName;
@@ -119,7 +126,7 @@ namespace JCore
                     httpFile.SaveAs(path);
                 }
                 catch {
-                    Error = SUploadError.HttpSave;
+                    Error = G.L["upload_HttpSave"];
                     break;
                 }
 
@@ -133,21 +140,21 @@ namespace JCore
             string result = null;
             while (true) {
                 if (!FileHelper.CheckFile(tempFile)) {
-                    Error = SUploadError.NoLocalFile;
+                    Error = G.L["upload_NoLocalFile"];
                     break;
                 }
 
                 // check ImageType, get ext
                 ImageFormat format = PsHelper.GetImageFormat(tempFile);
                 if (format == null || !m_config.ImageFormatList.Contains(format)) {
-                    Error = SUploadError.ImageFormat;
+                    Error = G.L["upload_ImageFormat"];
                     break;
                 }
 
                 // md5
                 string md5 = FileHelper.GetMD5(tempFile);
                 if(md5 == null) {
-                    Error = SUploadError.MD5;
+                    Error = G.L["upload_MD5"];
                     break;
                 }
 
@@ -165,13 +172,13 @@ namespace JCore
 
                 // thumb
                 if(!PsHelper.Thumb(tempFile, m_config.Dir + shortPath)) {
-                    Error = SUploadError.Thumb;
+                    Error = G.L["upload_Thumb"];
                     break;
                 }
 
                 // AddPic
-                if(!pictureModel.AddPic(md5, shortPath)) {
-                    Error = SUploadError.AddPic;
+                if(!pictureModel.AddPic(md5, shortPath, m_companyid)) {
+                    Error = G.L["upload_AddPic"];
                     break;
                 }
 
